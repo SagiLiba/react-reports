@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { PagesSplit } from './Components/PagesSplit/PagesSplit';
+import { Page } from './Components/Page/Page';
+import { ReportContextProvider } from './Contexts/ReportContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <ReportContextProvider>
+        <PagesSplit>
+          <div className='one'>Text</div>
+          <div className='two'>Text</div>
+          <div className='three'>Text</div>
+          <div className='four'>Text</div>
+          <div className='five'>Text</div>
+        </PagesSplit>
+      </ReportContextProvider>
     </div>
   );
 }
