@@ -4,11 +4,9 @@ import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
 import { fragmentPages, PageSize, RenderPhase, splitPages } from './../ReportsLib';
 
-// TODOS:
-// Detect when all components are rendered
-// Create Page numbers for all report, including multiple page splits.
+// Todo: Remove delayed prop
 
-const PagesSplitInner = ({ children, delayed }) => {
+const PagesSplitInner = ({ children, delayed, name = '' }) => {
   const reportContext = useContext(ReportContext);
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
   const [PagesSplitContextId, setPagesSplitContextId] = useState();
@@ -35,7 +33,12 @@ const PagesSplitInner = ({ children, delayed }) => {
     if (renderPhase === RenderPhase.PAGES_READY) {
       if (delayed) {
         setTimeout(() => {
-          reportContext.updatePageSplit({ id: PagesSplitContextId, ready: true, pagesAmount: splitPages.length });
+          reportContext.updatePageSplit({
+            id: PagesSplitContextId,
+            ready: true,
+            pagesAmount: splitPages.length,
+            data: { name },
+          });
         }, delayed);
       }
     }

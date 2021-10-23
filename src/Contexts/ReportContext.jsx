@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export const ReportContext = createContext({});
-
+let pagesSplitComponentsAmount = 0;
 let counter = 0;
 let pageCounter = 0;
 
@@ -10,13 +10,16 @@ export const ReportContextProvider = ({ children }) => {
   const [readyForPrint, setReadyForPrint] = useState(false);
 
   const registerPageSplit = () => {
-    counter = counter + 1;
-    setPagesInfo((current) => ({ ...current, [counter - 1]: { ready: false, pagesAmount: 0 } }));
-    return counter - 1;
+    pagesSplitComponentsAmount = pagesSplitComponentsAmount + 1;
+    setPagesInfo((current) => ({
+      ...current,
+      [pagesSplitComponentsAmount - 1]: { ready: false, pagesAmount: 0, data: {} },
+    }));
+    return pagesSplitComponentsAmount - 1;
   };
 
-  const updatePageSplit = ({ id, ready, pagesAmount }) => {
-    setPagesInfo((current) => ({ ...current, [id]: { ready, pagesAmount } }));
+  const updatePageSplit = ({ id, ready, pagesAmount, data }) => {
+    setPagesInfo((current) => ({ ...current, [id]: { ready, pagesAmount, data } }));
   };
 
   const getPageId = () => {
@@ -26,13 +29,11 @@ export const ReportContextProvider = ({ children }) => {
 
   useEffect(() => {
     const isPagesReady = Object.values(pagesInfo).every((value) => value.ready);
-    const allPageSplitComponentsRegistered = counter === Object.keys(pagesInfo).length;
+    const allPageSplitComponentsRegistered = pagesSplitComponentsAmount === Object.keys(pagesInfo).length;
 
     if (allPageSplitComponentsRegistered && isPagesReady) {
-      console.log(pagesInfo);
+      console.log('Ready for print', pagesInfo);
       setReadyForPrint(true);
-    } else {
-      // console.log(pagesInfo);
     }
   }, [pagesInfo]);
 
@@ -40,6 +41,8 @@ export const ReportContextProvider = ({ children }) => {
     registerPageSplit,
     updatePageSplit,
     getPageId,
+    pagesInfo,
+    readyForPrint,
   };
 
   return (

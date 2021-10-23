@@ -2,31 +2,33 @@ import './App.scss';
 import { PagesSplit } from './Components/PagesSplit/PagesSplit';
 import { Page } from './Components/Page/Page';
 import { ReportContextProvider } from './Contexts/ReportContext';
+import { TableOfContents } from './Components/TableOfContents/TableOfContents';
 
 function App() {
   return (
     <div className='App'>
       <ReportContextProvider>
-        <PagesSplit delayed={1000}>
-          <div className='one'>Text</div>
-          <div className='two'>Text</div>
+        <TableOfContents />
+        <PagesSplit delayed={1000} name='One'>
+          <div className='one'>Page One</div>
+          <div className='two'>Page One</div>
         </PagesSplit>
-        <PagesSplit delayed={300}>
-          <div className='four'>Text</div>
-          <div className='one'>Text</div>
-          <div className='five'>Text</div>
-          <div className='three'>Text</div>
+        <PagesSplit delayed={300} name='Two'>
+          <div className='four'>Page Two</div>
+          <div className='one'>Page Two</div>
+          <div className='five'>Page Two</div>
+          <div className='three'>Page Two</div>
         </PagesSplit>
-        <PagesSplit delayed={100}>
-          <div className='three'>Text</div>
-          <div className='two'>Text</div>
-          <div className='five'>Text</div>
-          <div className='four'>Text</div>
-          <div className='four'>Text</div>
-          <div className='four'>Text</div>
-          <div className='four'>Text</div>
-          <div className='four'>Text</div>
-          <div className='one'>Text</div>
+        <PagesSplit delayed={100} name='Three'>
+          <div className='three'>Page Three</div>
+          <div className='two'>Page Three</div>
+          <div className='five'>Page Three</div>
+          <div className='four'>Page Three</div>
+          <div className='four'>Page Three</div>
+          <div className='four'>Page Three</div>
+          <div className='four'>Page Three</div>
+          <div className='four'>Page Three</div>
+          <div className='one'>Page Three</div>
         </PagesSplit>
       </ReportContextProvider>
     </div>
