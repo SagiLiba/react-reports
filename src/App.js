@@ -7,23 +7,24 @@ function App() {
   return (
     <div className='App'>
       <ReportContextProvider>
-        <PagesSplit>
+        <PagesSplit delayed={1000}>
           <div className='one'>Text</div>
           <div className='two'>Text</div>
-          <div className='three'>Text</div>
-          <div className='four'>Text</div>
-          <div className='five'>Text</div>
         </PagesSplit>
-        <PagesSplit>
+        <PagesSplit delayed={300}>
           <div className='four'>Text</div>
           <div className='one'>Text</div>
           <div className='five'>Text</div>
           <div className='three'>Text</div>
         </PagesSplit>
-        <PagesSplit>
+        <PagesSplit delayed={100}>
           <div className='three'>Text</div>
           <div className='two'>Text</div>
           <div className='five'>Text</div>
+          <div className='four'>Text</div>
+          <div className='four'>Text</div>
+          <div className='four'>Text</div>
+          <div className='four'>Text</div>
           <div className='four'>Text</div>
           <div className='one'>Text</div>
         </PagesSplit>

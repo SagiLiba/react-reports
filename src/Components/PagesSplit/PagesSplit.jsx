@@ -4,9 +4,14 @@ import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
 import { fragmentPages, PageSize, RenderPhase, splitPages } from './../ReportsLib';
 
-const PagesSplitInner = ({ children }) => {
+// TODOS:
+// Detect when all components are rendered
+// Create Page numbers for all report, including multiple page splits.
+
+const PagesSplitInner = ({ children, delayed }) => {
   const reportContext = useContext(ReportContext);
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
+  const [PagesSplitContextId, setPagesSplitContextId] = useState();
   const [splitPages, setSplitPages] = useState([]);
   const childrenHeights = useRef({});
 
@@ -21,14 +26,25 @@ const PagesSplitInner = ({ children }) => {
   };
 
   useEffect(() => {
+    const PagesSplitId = reportContext.registerPageSplit();
+    setPagesSplitContextId(PagesSplitId);
     setRenderPhase(RenderPhase.SPLIT_TO_PAGES);
-    splitToPages();
   }, []);
 
   useEffect(() => {
     if (renderPhase === RenderPhase.PAGES_READY) {
+      if (delayed) {
+        setTimeout(() => {
+          reportContext.updatePageSplit({ id: PagesSplitContextId, ready: true, pagesAmount: splitPages.length });
+        }, delayed);
+      }
+    }
+    if (renderPhase === RenderPhase.SPLIT_TO_PAGES) {
+      splitToPages();
     }
   }, [renderPhase]);
+
+  /** Rendering Phases  **/
 
   if (renderPhase === RenderPhase.MEASURE) {
     return children.map((child, index) => {

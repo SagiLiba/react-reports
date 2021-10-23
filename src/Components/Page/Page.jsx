@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { ReportContext } from '../../Contexts/ReportContext';
 import './Page.scss';
 
 export const Page = ({ children }) => {
-  return <div className={'page'}>{children}</div>;
+  const reportContext = useContext(ReportContext);
+  const [pageNumber, setPageNumber] = useState('');
+
+  useEffect(() => {
+    setPageNumber(reportContext.getPageId());
+  }, []);
+
+  return <div className={`page page-${pageNumber}`}>{children}</div>;
 };
