@@ -3,7 +3,16 @@ import { createContext, useContext, useState } from 'react';
 export const ReportContext = createContext({});
 
 export const ReportContextProvider = ({ children }) => {
-  const [state, setState] = useState({});
+  const [pagesCounter, setPagesCounter] = useState(0);
+  const [pagesAreReady, setPagesAreReady] = useState({});
+  const [readyForPrint, setReadyForPrint] = useState(false);
 
-  return <ReportContext.Provider value={state}>{children}</ReportContext.Provider>;
+  const providedValue = {};
+
+  return (
+    <ReportContext.Provider value={providedValue}>
+      {children}
+      {readyForPrint && <div id={'ready-for-print'} />}
+    </ReportContext.Provider>
+  );
 };

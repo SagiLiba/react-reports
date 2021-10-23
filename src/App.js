@@ -14,6 +14,19 @@ function App() {
           <div className='four'>Text</div>
           <div className='five'>Text</div>
         </PagesSplit>
+        <PagesSplit>
+          <div className='four'>Text</div>
+          <div className='one'>Text</div>
+          <div className='five'>Text</div>
+          <div className='three'>Text</div>
+        </PagesSplit>
+        <PagesSplit>
+          <div className='three'>Text</div>
+          <div className='two'>Text</div>
+          <div className='five'>Text</div>
+          <div className='four'>Text</div>
+          <div className='one'>Text</div>
+        </PagesSplit>
       </ReportContextProvider>
     </div>
   );

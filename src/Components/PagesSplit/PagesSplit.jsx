@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ReportContext } from '../../Contexts/ReportContext';
 import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
-import { PageSize, RenderPhase } from './../ReportsLib';
+import { fragmentPages, PageSize, RenderPhase, splitPages } from './../ReportsLib';
 
-export const PagesSplit = ({ children }) => {
+const PagesSplitInner = ({ children }) => {
   const reportContext = useContext(ReportContext);
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
   const [splitPages, setSplitPages] = useState([]);
@@ -15,27 +15,8 @@ export const PagesSplit = ({ children }) => {
   };
 
   const splitToPages = () => {
-    let pages = [[]];
-    let currentPage = 0;
-    let sumChildrenHeights = 0;
-    const A4Height = PageSize.A4.height;
-
-    for (let i = 0; i < children.length; i++) {
-      const childHeight = childrenHeights.current[i];
-
-      if (sumChildrenHeights + childHeight > A4Height) {
-        // Add child to next page
-        currentPage += 1;
-        sumChildrenHeights = childHeight;
-        pages.push([children[i]]);
-      } else {
-        // Add child to page
-        sumChildrenHeights += childHeight;
-        pages[currentPage].push(children[i]);
-      }
-    }
-
-    setSplitPages(pages);
+    const splitPages = fragmentPages({ children, childrenHeights });
+    setSplitPages(splitPages);
     setRenderPhase(RenderPhase.PAGES_READY);
   };
 
@@ -43,6 +24,11 @@ export const PagesSplit = ({ children }) => {
     setRenderPhase(RenderPhase.SPLIT_TO_PAGES);
     splitToPages();
   }, []);
+
+  useEffect(() => {
+    if (renderPhase === RenderPhase.PAGES_READY) {
+    }
+  }, [renderPhase]);
 
   if (renderPhase === RenderPhase.MEASURE) {
     return children.map((child, index) => {
@@ -62,3 +48,5 @@ export const PagesSplit = ({ children }) => {
 
   return <></>;
 };
+
+export const PagesSplit = PagesSplitInner;

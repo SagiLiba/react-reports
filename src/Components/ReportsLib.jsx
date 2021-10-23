@@ -6,7 +6,31 @@ export const RenderPhase = {
 
 export const PageSize = {
   A4: {
-    width: 1240,
-    height: 1754,
+    width: 1200,
+    height: 1410,
   },
+};
+
+export const fragmentPages = ({ children, childrenHeights }) => {
+  let pages = [[]];
+  let currentPage = 0;
+  let sumChildrenHeights = 0;
+  const A4Height = PageSize.A4.height;
+
+  for (let i = 0; i < children.length; i++) {
+    const childHeight = childrenHeights.current[i];
+
+    if (sumChildrenHeights + childHeight > A4Height) {
+      // Add child to next page
+      currentPage += 1;
+      sumChildrenHeights = childHeight;
+      pages.push([children[i]]);
+    } else {
+      // Add child to page
+      sumChildrenHeights += childHeight;
+      pages[currentPage].push(children[i]);
+    }
+  }
+
+  return pages;
 };
