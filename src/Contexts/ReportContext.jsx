@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import './ReportStyles.scss';
 
 export const ReportContext = createContext({});
 let pagesSplitComponentsAmount = 0;
@@ -47,8 +48,10 @@ export const ReportContextProvider = ({ children }) => {
 
   return (
     <ReportContext.Provider value={providedValue}>
-      {children}
-      {readyForPrint && <div id={'ready-for-print'} />}
+      <section className='report'>
+        {children}
+        {readyForPrint && <div id={'ready-for-print'} />}
+      </section>
     </ReportContext.Provider>
   );
 };

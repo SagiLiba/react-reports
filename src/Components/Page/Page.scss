@@ -1,6 +1,28 @@
+@mixin A3Size {
+  width: 29.7cm;
+  height: 42cm;
+}
+@mixin A4Size {
+  width: 21cm;
+  height: 29.65cm;
+}
+@mixin A5Size {
+  width: 14.8cm;
+  height: 21cm;
+}
+
 .page {
-  background-color: grey;
-  width: 1200px;
-  height: 1410px;
-  box-shadow: 0px 0px 27px 3px #afadad;
+  @include A4Size;
+  background: white;
+  box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+  margin: 10mm auto;
+  overflow: hidden;
+}
+
+@media print {
+  body,
+  .page {
+    margin: 0;
+    box-shadow: 0;
+  }
 }

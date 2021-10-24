@@ -1,0 +1,14 @@
+@page {
+  // Print page settings
+  size: A4 portrait !important;
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  -webkit-print-color-adjust: exact !important;
+}
+
+.report {
+  * {
+    -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+    color-adjust: exact !important; /*Firefox*/
+  }
+}

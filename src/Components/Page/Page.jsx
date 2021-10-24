@@ -15,8 +15,8 @@ export const Page = ({ children, pageId, automaticPageNumber = true }) => {
   const pageElementId = pageId ? pageId : 'page-' + pageNumber;
 
   return (
-    <div className={`page`} id={pageElementId}>
+    <article className={`page`} id={pageElementId}>
       {children}
-    </div>
+    </article>
   );
 };
