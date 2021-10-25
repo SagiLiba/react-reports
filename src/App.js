@@ -3,6 +3,7 @@ import { PagesSplit } from './Components/PagesSplit/PagesSplit';
 import { Page } from './Components/Page/Page';
 import { ReportContextProvider } from './Contexts/ReportContext';
 import { TableOfContents } from './Components/TableOfContents/TableOfContents';
+import { Grouper } from './Components/Grouper/Grouper';
 
 const promiseOne = new Promise((resolve) => resolve({ status: true, data: ['one', 'two', 'three'] }));
 const promiseTwo = new Promise((resolve) => resolve({ status: true, data: ['four', 'five', 'six'] }));
@@ -34,6 +35,17 @@ function App() {
           <div className='one'>Page Two</div>
           <div className='five'>Page Two</div>
           <div className='three'>Page Two</div>
+          <Grouper groupEvery={2}>
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+          </Grouper>
         </PagesSplit>
         {/* <PagesSplit delayed={100} name='Three'>
           <div className='three'>Page Three</div>

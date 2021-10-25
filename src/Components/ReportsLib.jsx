@@ -6,8 +6,8 @@ export const RenderPhase = {
 
 export const PageSize = {
   A4: {
-    width: 1200,
-    height: 1410,
+    width: 793,
+    height: 1120,
   },
 };
 
