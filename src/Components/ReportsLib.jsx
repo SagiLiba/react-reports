@@ -34,3 +34,7 @@ export const fragmentPages = ({ children, childrenHeights }) => {
 
   return pages;
 };
+
+export const isEmptyObject = (empty) => {
+  return Object.keys(empty).length === 0 && empty.constructor === Object;
+};

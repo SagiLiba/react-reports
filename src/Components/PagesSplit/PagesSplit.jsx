@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ReportContext } from '../../Contexts/ReportContext';
 import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
+import { useReport } from '../useReport';
 import { fragmentPages, PageSize, RenderPhase, splitPages } from './../ReportsLib';
 
 // Todo: Remove delayed prop
 
-const PagesSplitInner = ({ children, delayed, name = '' }) => {
+const PagesSplitInner = ({ children, delayed, name = '', reportData }) => {
   const reportContext = useContext(ReportContext);
+  const report = useReport();
+  console.log(report);
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
   const [PagesSplitContextId, setPagesSplitContextId] = useState();
   const [splitPages, setSplitPages] = useState([]);

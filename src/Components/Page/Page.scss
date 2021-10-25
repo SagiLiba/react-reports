@@ -2,9 +2,9 @@
   width: 29.7cm;
   height: 42cm;
 }
-@mixin A4Size {
-  width: 21cm;
-  height: 29.65cm;
+@mixin A4Size($multiply: 1) {
+  width: 21cm * $multiply;
+  height: 29.65cm * $multiply;
 }
 @mixin A5Size {
   width: 14.8cm;
@@ -20,6 +20,10 @@
 }
 
 @media print {
+  .page {
+    width: 21cm;
+    height: 29.65cm;
+  }
   body,
   .page {
     margin: 0;
