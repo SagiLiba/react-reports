@@ -17,6 +17,8 @@ export const Page = ({ children, pageId, automaticPageNumber = true }) => {
   return (
     <article className={`page`} id={pageElementId}>
       {children}
+      {/* Remove this line number, it is not part of the page calculation */}
+      <center>{pageNumber}</center>
     </article>
   );
 };

@@ -1,41 +1,31 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { isEmptyObject } from '../Components/ReportsLib';
+import { createContext, useEffect, useRef, useState } from 'react';
 import './ReportStyles.scss';
+import { useReportContextHelper } from './useReportContextHelper';
 
 export const ReportContext = createContext({});
-let pagesSplitComponentsAmount = 0;
-let counter = 0;
-let pageCounter = 0;
 
 export const ReportContextProvider = ({ config, children }) => {
+  const pageCounter = useRef(0);
+  const { readyForPrint, pagesInfo, updatePageGroup, registerPageGroup } = useReportContextHelper();
   const [handledAPIRequests, setHandledAPIRequests] = useState(false);
   const [handledInitialValues, setHandledInitialValues] = useState(false);
+
   const [reportData, setReportData] = useState({
     initial: {},
     requests: {},
     rejectedRequests: {},
   });
-  const [pagesInfo, setPagesInfo] = useState({});
-  const [readyForPrint, setReadyForPrint] = useState(false);
-
-  const registerPageSplit = () => {
-    pagesSplitComponentsAmount = pagesSplitComponentsAmount + 1;
-    setPagesInfo((current) => ({
-      ...current,
-      [pagesSplitComponentsAmount - 1]: { ready: false, pagesAmount: 0, data: {} },
-    }));
-    return pagesSplitComponentsAmount - 1;
-  };
-
-  const updatePageSplit = ({ id, ready, pagesAmount, data }) => {
-    setPagesInfo((current) => ({ ...current, [id]: { ready, pagesAmount, data } }));
-  };
 
   const getPageId = () => {
-    pageCounter += 1;
-    return pageCounter;
+    pageCounter.current += 1;
+    return pageCounter.current;
   };
 
+  // -----------------------------------------------------
+  // The developer can supply a list of APIs that will be
+  // requests before the report generation starts.
+  // He can then access it through "useReport" directly.
+  // ----------------------------------------------------
   const handleApiRequests = async (apis) => {
     let requests = [];
     let processingFunctions = [];
@@ -72,45 +62,47 @@ export const ReportContextProvider = ({ config, children }) => {
     });
   };
 
+  // --------------------------------------------------------------
+  // The developer can supply a list of initial values that will be
+  // supplied before the report generation starts.
+  // He can then access it through "useReport" directly.
+  // --------------------------------------------------------------
+  const handleInitialValues = (values) => {
+    const initialData = {};
+
+    values.forEach(({ putOnProp, value }) => {
+      initialData[putOnProp] = value;
+    });
+
+    setReportData((current) => {
+      let newCurrent = {
+        ...current,
+        initial: initialData,
+      };
+      return newCurrent;
+    });
+  };
+
+  // ----------------------------------------------------
+  // Handle APIs and Initial Values set by the developer.
+  // ----------------------------------------------------
   useEffect(() => {
-    let isPagesReady = false;
+    const apis = config && config.apis;
+    const initialValues = config && config.initialValues;
 
-    if (!isEmptyObject(pagesInfo)) {
-      isPagesReady = Object.values(pagesInfo).every((value) => value.ready);
-    }
-
-    const allPageSplitComponentsRegistered = pagesSplitComponentsAmount === Object.keys(pagesInfo).length;
-
-    if (allPageSplitComponentsRegistered && isPagesReady) {
-      console.log('Ready for print', pagesInfo);
-      setReadyForPrint(true);
-    }
-  }, [pagesInfo]);
-
-  useEffect(() => {
-    if (config && config.apis) {
+    if (apis) {
       // The user has requests that needs to be resolved.
-      handleApiRequests(config.apis);
+      handleApiRequests(apis);
     } else {
-      // No APIs, start creating the report
+      // No APIs, flag as done with apis.
       setHandledAPIRequests(true);
     }
 
-    if (config && config.initialValues) {
-      const initialData = {};
-
-      config.initialValues.forEach(({ putOnProp, value }) => {
-        initialData[putOnProp] = value;
-      });
-
-      setReportData((current) => {
-        let newCurrent = {
-          ...current,
-          initial: initialData,
-        };
-        return newCurrent;
-      });
+    if (initialValues) {
+      // The user has supplied initial values.
+      handleInitialValues(initialValues);
     } else {
+      // No initial values, flag as done with initial values.
       setHandledInitialValues(true);
     }
   }, []);
@@ -134,23 +126,30 @@ export const ReportContextProvider = ({ config, children }) => {
   }, [reportData]);
 
   const providedValue = {
-    registerPageSplit,
-    updatePageSplit,
+    registerPageGroup,
+    updatePageGroup,
     getPageId,
     pagesInfo,
     readyForPrint,
     reportData,
   };
 
+  // -----------------------------------------------------
   // Do not render until all the API requests are handled.
+  // -----------------------------------------------------
   if (!handledAPIRequests) {
     return <></>;
   }
-
+  // -------------------------------------------------------
+  // Do not render until all the initial values are handled.
+  // -------------------------------------------------------
   if (!handledInitialValues) {
     return <></>;
   }
 
+  // -------------------------------------------------------------------------
+  // Start rendering the report, only after APIs & initialValues were handled.
+  // -------------------------------------------------------------------------
   return (
     <ReportContext.Provider value={providedValue}>
       <section className='report'>
@@ -160,10 +159,3 @@ export const ReportContextProvider = ({ config, children }) => {
     </ReportContext.Provider>
   );
 };
-
-// {React.Children.map(children, (child) => {
-//   if (React.isValidElement(child)) {
-//     return React.cloneElement(child, { reportData });
-//   }
-//   return child;
-// })}

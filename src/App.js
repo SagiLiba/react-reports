@@ -1,5 +1,5 @@
 import './App.scss';
-import { PagesSplit } from './Components/PagesSplit/PagesSplit';
+import { PageGroup } from './Components/PageGroup/PageGroup';
 import { Page } from './Components/Page/Page';
 import { ReportContextProvider } from './Contexts/ReportContext';
 import { TableOfContents } from './Components/TableOfContents/TableOfContents';
@@ -26,11 +26,11 @@ function App() {
     <div className='App'>
       <ReportContextProvider config={reportConfig}>
         <TableOfContents />
-        {/* <PagesSplit delayed={1000} name='One'>
+        {/* <PageGroup delayed={1000} name='One'>
           <div className='one'>Page One</div>
           <div className='two'>Page One</div>
-        </PagesSplit> */}
-        <PagesSplit delayed={300} name='Two'>
+        </PageGroup> */}
+        <PageGroup delayed={300} name='Two'>
           <div className='four'>Page Two</div>
           <div className='one'>Page Two</div>
           <div className='five'>Page Two</div>
@@ -46,8 +46,8 @@ function App() {
             <div>H</div>
             <div>I</div>
           </Grouper>
-        </PagesSplit>
-        {/* <PagesSplit delayed={100} name='Three'>
+        </PageGroup>
+        {/* <PageGroup delayed={100} name='Three'>
           <div className='three'>Page Three</div>
           <div className='two'>Page Three</div>
           <div className='five'>Page Three</div>
@@ -57,7 +57,7 @@ function App() {
           <div className='four'>Page Three</div>
           <div className='four'>Page Three</div>
           <div className='one'>Page Three</div>
-        </PagesSplit> */}
+        </PageGroup> */}
       </ReportContextProvider>
     </div>
   );
