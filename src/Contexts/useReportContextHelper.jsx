@@ -4,6 +4,8 @@ import { isEmptyObject } from '../Components/ReportsLib';
 export const useReportContextHelper = () => {
   const pageGroupComponentsAmount = useRef(0);
   const [readyForPrint, setReadyForPrint] = useState(false);
+  const [readyForAddingPageNumbers, setReadyForAddingPageNumbers] = useState(false);
+  const [addedPageNumbers, setAddedPageNumbers] = useState(false);
   const [pagesInfo, setPagesInfo] = useState({});
 
   // --------------------------------------------
@@ -27,12 +29,29 @@ export const useReportContextHelper = () => {
   const updatePageGroup = ({ id, ready, pagesAmount, data }) => {
     setPagesInfo((current) => ({ ...current, [id]: { ready, pagesAmount, data } }));
   };
+  // ---------------------------------------
+  // Notify when all page numbers were added
+  // ---------------------------------------
+  const updatePageNumber = (pageNumber) => {
+    const amountOfPages = Object.values(pagesInfo).reduce((sum, { pagesAmount }) => sum + pagesAmount, 0);
+    if (pageNumber === amountOfPages) {
+      setAddedPageNumbers(true);
+    }
+  };
 
   // -----------------------------------------------------------
   // Decide when to render the "ready-for-print" element,
   // Allowing automated tools to print the page to a PDF format.
   // -----------------------------------------------------------
   const handleReadyForPrint = () => {
+    console.log('Ready for print', pagesInfo);
+    setReadyForPrint(true);
+  };
+
+  // ---------------------------------------------------
+  // When all pages are ready, start adding page numbers
+  // ---------------------------------------------------
+  const handleAddPageNumbers = () => {
     let isPagesReady = false;
 
     if (!isEmptyObject(pagesInfo)) {
@@ -42,14 +61,19 @@ export const useReportContextHelper = () => {
     const allPageGroupComponentsRegistered = pageGroupComponentsAmount.current === Object.keys(pagesInfo).length;
 
     if (allPageGroupComponentsRegistered && isPagesReady) {
-      console.log('Ready for print', pagesInfo);
-      setReadyForPrint(true);
+      setReadyForAddingPageNumbers(true);
     }
   };
 
   useEffect(() => {
-    handleReadyForPrint();
+    handleAddPageNumbers();
   }, [pagesInfo]);
 
-  return { readyForPrint, registerPageGroup, updatePageGroup, pagesInfo };
+  useEffect(() => {
+    if (addedPageNumbers) {
+      handleReadyForPrint(true);
+    }
+  }, [addedPageNumbers]);
+
+  return { readyForPrint, readyForAddingPageNumbers, updatePageNumber, registerPageGroup, updatePageGroup, pagesInfo };
 };

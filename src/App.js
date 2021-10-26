@@ -24,10 +24,6 @@ const reportConfig = {
   ],
 };
 
-/**
- * Order has changed, I've counted on the syncrhonous order of the PageGroup, to corretly show the pages in order
- * Now the async pages are rendered after wards.
- * **/
 function App() {
   return (
     <div className='App'>

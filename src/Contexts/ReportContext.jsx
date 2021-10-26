@@ -6,7 +6,8 @@ export const ReportContext = createContext({});
 
 export const ReportContextProvider = ({ config, children }) => {
   const pageCounter = useRef(0);
-  const { readyForPrint, pagesInfo, updatePageGroup, registerPageGroup } = useReportContextHelper();
+  const { readyForPrint, readyForAddingPageNumbers, pagesInfo, updatePageGroup, registerPageGroup, updatePageNumber } =
+    useReportContextHelper();
   const [handledAPIRequests, setHandledAPIRequests] = useState(false);
   const [handledInitialValues, setHandledInitialValues] = useState(false);
 
@@ -131,6 +132,8 @@ export const ReportContextProvider = ({ config, children }) => {
     getPageId,
     pagesInfo,
     readyForPrint,
+    readyForAddingPageNumbers,
+    updatePageNumber,
     reportData,
   };
 

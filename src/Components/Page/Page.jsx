@@ -7,10 +7,12 @@ export const Page = ({ children, pageId, automaticPageNumber = true }) => {
   const [pageNumber, setPageNumber] = useState('');
 
   useEffect(() => {
-    if (automaticPageNumber) {
-      setPageNumber(reportContext.getPageId());
+    if (automaticPageNumber && reportContext.readyForAddingPageNumbers) {
+      const getPageNumber = reportContext.getPageId();
+      setPageNumber(getPageNumber);
+      reportContext.updatePageNumber(getPageNumber);
     }
-  }, []);
+  }, [reportContext.readyForAddingPageNumbers]);
 
   const pageElementId = pageId ? pageId : 'page-' + pageNumber;
 
