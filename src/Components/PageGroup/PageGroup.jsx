@@ -7,7 +7,7 @@ import { usePageGroup } from './usePageGroup';
 // Todo: Remove delayed prop
 
 export const PageGroup = ({ children, delayed, name = '' }) => {
-  const { renderPhase, handleChildHeight, pages } = usePageGroup({ children, delayed, name });
+  const { renderPhase, handleChildHeight, handleAsyncChildHeight, pages } = usePageGroup({ children, delayed, name });
 
   // ---------------------------
   // PageGroup Rendering Phases
@@ -16,6 +16,12 @@ export const PageGroup = ({ children, delayed, name = '' }) => {
   // Measure each childs height:
   if (renderPhase === RenderPhase.MEASURE) {
     return children.map((child, index) => {
+      const isAsyncChild = child.props.measureAsync;
+
+      if (isAsyncChild) {
+        return React.cloneElement(child, { ...child.props, notifyHeight: handleAsyncChildHeight(index), key: index });
+      }
+
       return (
         <MeasureComponent key={index} notifyHeight={handleChildHeight(index)} childIndex={index}>
           {child}
