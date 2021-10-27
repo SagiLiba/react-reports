@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { measureHeight } from './../MeasureComponent/MeasureComponent';
+import { measureHeight, OverflowAuto } from './../MeasureComponent/MeasureComponent';
 
 export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
   const [texts, setTexts] = useState(_savedState ? _savedState.texts : []);
@@ -27,14 +27,18 @@ export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
   });
 
   return (
-    <div className={'async-text'} ref={asyncElement}>
-      {texts.map((text, index) => {
-        return (
-          <h2 key={index}>
-            {index + 1}. {text}
-          </h2>
-        );
-      })}
-    </div>
+    // Use Overflow auto for correct height calcualtions
+    // Referencing it will return an element with correct height.
+    <OverflowAuto ref={asyncElement}>
+      <div className={'async-text'}>
+        {texts.map((text, index) => {
+          return (
+            <h2 key={index}>
+              {index + 1}. {text}
+            </h2>
+          );
+        })}
+      </div>
+    </OverflowAuto>
   );
 };

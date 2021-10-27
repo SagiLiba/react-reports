@@ -1,16 +1,57 @@
 import React, { useEffect, useRef } from 'react';
 
+// --------------------------------------------------
+// Overflow auto, makes sure the height calculations
+// will include the margins
+// --------------------------------------------------
+export const OverflowAuto = React.forwardRef(({ children }, ref) => {
+  return (
+    <div style={{ overflow: 'auto' }} ref={ref}>
+      {children}
+    </div>
+  );
+});
+
+const getElementMargins = (element) => {
+  const elementComputedStyle = window.getComputedStyle(element);
+  let marginTop = 0;
+  let marginBottom = 0;
+  let marginLeft = 0;
+  let marginRight = 0;
+
+  try {
+    marginTop = parseInt(elementComputedStyle.marginTop);
+    marginBottom = parseInt(elementComputedStyle.marginBottom);
+    marginLeft = parseInt(elementComputedStyle.marginLeft);
+    marginRight = parseInt(elementComputedStyle.marginRight);
+  } catch (error) {
+    marginTop = 0;
+    marginBottom = 0;
+    marginLeft = 0;
+    marginRight = 0;
+    console.error('Could not parse element margins, used 0 value for height calculation', element);
+  }
+  return {
+    marginBottom,
+    marginLeft,
+    marginTop,
+    marginRight,
+  };
+};
+
 export const measureHeight = (element) => {
   if (!element) {
-    console.warn('No element was supplied to measureHeight function.');
+    console.error('No element was supplied to measureHeight function.');
     return 0;
   }
-
+  const { marginTop, marginBottom } = getElementMargins(element);
   const elementRect = element.getBoundingClientRect();
+
   if (elementRect) {
-    return elementRect.height;
+    return elementRect.height + marginTop + marginBottom;
   }
-  console.warn('Could not calculate boundClientRect for element', element);
+
+  console.error('Could not calculate boundClientRect for element', element);
   return 0;
 };
 
@@ -23,14 +64,9 @@ export const MeasureComponent = ({ children, notifyHeight }) => {
 
   useEffect(() => {
     if (childRef) {
-      const borderPixelAmount = 2; // With border it seems that margin calculations are correct.
-      notifyHeight(measureHeight(childRef) - borderPixelAmount);
+      notifyHeight(measureHeight(childRef));
     }
   }, []);
 
-  return (
-    <div ref={(ref) => (childRef = ref)} style={{ border: '1px solid black' }}>
-      {children}
-    </div>
-  );
+  return <OverflowAuto ref={(ref) => (childRef = ref)}>{children}</OverflowAuto>;
 };
