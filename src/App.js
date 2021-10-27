@@ -32,11 +32,10 @@ function App() {
           <div className='two'>Page One</div>
         </PageGroup> */}
         <PageGroup delayed={300} name='Two'>
-          <AsyncChild measureAsync />
-          <div className='four'>Page Two</div>
+          {/* <AsyncChild measureAsync /> */}
           {/* <AsyncChild measureAsync /> */}
           <div className='five'>Page Two</div>
-          <AsyncChild measureAsync />
+          {/* <AsyncChild measureAsync /> */}
           {/* <AsyncChild measureAsync /> */}
           <div className='one'>Page Two</div>
           <div className='three'>Page Two</div>
@@ -50,7 +49,11 @@ function App() {
             <div>G</div>
             <div>H</div>
             <div>I</div>
+            <div>J</div>
+            <div>K</div>
+            <div>L</div>
           </Grouper>
+          <div className='four'>Page Two</div>
         </PageGroup>
         {/* <PageGroup delayed={100} name='Three'>
           <div className='three'>Page Three</div>

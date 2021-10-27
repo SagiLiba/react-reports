@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import { GrouperFunction } from '../Grouper/Grouper';
 import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
 
@@ -14,6 +15,23 @@ export const usePageGroup = ({ children, delayed, name }) => {
   const asyncChildrenHeights = useRef({});
   const asyncChildrenCount = useRef(0);
 
+  const spreadGrouperChildren = (children) => {
+    let newChildren = [];
+
+    React.Children.forEach(children, (child, index) => {
+      const isGrouperChild = child && child.type && child.type.name === 'Grouper';
+
+      if (isGrouperChild) {
+        const groupElements = GrouperFunction({ ...child.props });
+
+        newChildren = [...newChildren, ...groupElements];
+      } else {
+        newChildren.push(child);
+      }
+    });
+    return newChildren;
+  };
+
   const updateAsyncChildrenCount = () => {
     let count = 0;
     children.forEach((child) => {
@@ -26,6 +44,7 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // Update the "childrenHeights" with the child component height
   // ------------------------------------------------------------
   const handleChildHeight = (childIndex) => (height) => {
+    console.log(childIndex, height);
     childrenHeights.current[childIndex] = height;
   };
   // -----------------------------------------------------------------
@@ -46,7 +65,8 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // --------------------------------------------------------------------------
   const splitToPages = () => {
     const _childrenHeights = isEmptyObject(allChildrenHeights) ? childrenHeights : { current: allChildrenHeights };
-    const splitPages = fragmentPages({ children, childrenHeights: _childrenHeights });
+    console.log('Split pages, children heights: ', _childrenHeights);
+    const splitPages = fragmentPages({ children: spreadGrouperChildren(children), childrenHeights: _childrenHeights });
     setSplitPages(splitPages);
     setRenderPhase(RenderPhase.PAGES_READY);
   };
@@ -94,5 +114,13 @@ export const usePageGroup = ({ children, delayed, name }) => {
     }
   }, [renderPhase]);
 
-  return { renderPhase, setRenderPhase, handleChildHeight, handleAsyncChildHeight, pageGroupId, pages: splitPages };
+  return {
+    renderPhase,
+    setRenderPhase,
+    handleChildHeight,
+    handleAsyncChildHeight,
+    spreadGrouperChildren,
+    pageGroupId,
+    pages: splitPages,
+  };
 };

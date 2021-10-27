@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { PageGroupContext, PageGroupProvider } from '../../Contexts/PageGroupContext';
+import { GrouperFunction } from '../Grouper/Grouper';
 import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
 import { RenderPhase } from '../ReportsLib';
@@ -12,7 +13,13 @@ import { usePageGroup } from './usePageGroup';
 
 const BasePageGroup = ({ children, delayed, name = '' }) => {
   const pageGroupContext = useContext(PageGroupContext);
-  const { renderPhase, handleChildHeight, handleAsyncChildHeight, pages } = usePageGroup({ children, delayed, name });
+  const { renderPhase, handleChildHeight, handleAsyncChildHeight, spreadGrouperChildren, pages } = usePageGroup({
+    children,
+    delayed,
+    name,
+  });
+
+  const parsedChildren = spreadGrouperChildren(children);
 
   // ---------------------------
   // PageGroup Rendering Phases
@@ -20,14 +27,14 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
   // Measure each childs height:
   // ---------------------------
   if (renderPhase === RenderPhase.MEASURE) {
-    return children.map((child, index) => {
+    return parsedChildren.map((child, index) => {
       const isAsyncChild = child.props.measureAsync;
 
       if (isAsyncChild) {
         return React.cloneElement(child, {
           ...child.props,
           key: index,
-          notifyHeight: handleAsyncChildHeight(index),
+          _notifyHeight: handleAsyncChildHeight(index),
           _saveState: pageGroupContext.saveChildState(index),
           _savedState: pageGroupContext.savedChildrenStates[index] || null,
         });

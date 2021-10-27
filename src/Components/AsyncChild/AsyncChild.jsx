@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-export const AsyncChild = ({ notifyHeight, _saveState, _savedState }) => {
+export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
   // console.log('Async Child:', props);
 
   const [texts, setTexts] = useState(_savedState ? _savedState.texts : []);
@@ -17,9 +17,9 @@ export const AsyncChild = ({ notifyHeight, _saveState, _savedState }) => {
     // You must notify the height of the child only after it has rendered all of its async behavior, APIs, images, text, etc...
     // You must also save your async information using _saveState to avoid recalling the state in the next child creation
     // TODO: Understand why removing _savedState from the if statement does not impair the logic
-    console.log(_savedState);
+    // console.log(_savedState);
     if (texts.length > 0 && !_savedState) {
-      notifyHeight && notifyHeight(asyncElement.current.clientHeight);
+      _notifyHeight && _notifyHeight(asyncElement.current.clientHeight);
       _saveState &&
         _saveState({
           texts,
