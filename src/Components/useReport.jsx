@@ -4,5 +4,5 @@ import { ReportContext } from './../Contexts/ReportContext';
 export const useReport = () => {
   const reportContext = useContext(ReportContext);
 
-  return { ...reportContext.reportData };
+  return { ...reportContext.data };
 };
