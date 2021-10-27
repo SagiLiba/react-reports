@@ -34,7 +34,7 @@ export const usePageGroup = ({ children, delayed, name }) => {
 
   const updateAsyncChildrenCount = () => {
     let count = 0;
-    children.forEach((child) => {
+    React.Children.forEach(children, (child) => {
       const isAsyncChild = child.props.measureAsync;
       isAsyncChild && count++;
     });

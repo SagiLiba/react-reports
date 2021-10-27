@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { measureHeight } from './../MeasureComponent/MeasureComponent';
 
 export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
   // console.log('Async Child:', props);
@@ -19,7 +20,7 @@ export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
     // TODO: Understand why removing _savedState from the if statement does not impair the logic
     // console.log(_savedState);
     if (texts.length > 0 && !_savedState) {
-      _notifyHeight && _notifyHeight(asyncElement.current.clientHeight);
+      _notifyHeight && _notifyHeight(measureHeight(asyncElement.current));
       _saveState &&
         _saveState({
           texts,
