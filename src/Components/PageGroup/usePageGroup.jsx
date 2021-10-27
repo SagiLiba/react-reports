@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GrouperFunction } from '../Grouper/Grouper';
 import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
@@ -44,7 +44,6 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // Update the "childrenHeights" with the child component height
   // ------------------------------------------------------------
   const handleChildHeight = (childIndex) => (height) => {
-    console.log(childIndex, height);
     childrenHeights.current[childIndex] = height;
   };
   // -----------------------------------------------------------------
@@ -65,8 +64,8 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // --------------------------------------------------------------------------
   const splitToPages = () => {
     const _childrenHeights = isEmptyObject(allChildrenHeights) ? childrenHeights : { current: allChildrenHeights };
-    console.log('Split pages, children heights: ', _childrenHeights);
-    const splitPages = fragmentPages({ children: spreadGrouperChildren(children), childrenHeights: _childrenHeights });
+    const _children = spreadGrouperChildren(children);
+    const splitPages = fragmentPages({ children: _children, childrenHeights: _childrenHeights });
     setSplitPages(splitPages);
     setRenderPhase(RenderPhase.PAGES_READY);
   };
