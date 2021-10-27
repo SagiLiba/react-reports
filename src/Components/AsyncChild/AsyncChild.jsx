@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { measureHeight } from './../MeasureComponent/MeasureComponent';
 
 export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
-  // console.log('Async Child:', props);
-
   const [texts, setTexts] = useState(_savedState ? _savedState.texts : []);
   const asyncElement = useRef();
 

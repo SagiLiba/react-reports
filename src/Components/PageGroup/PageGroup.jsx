@@ -52,20 +52,30 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
   // Return all created pages:
   // -------------------------
 
+  /**
+   * Every map s
+   */
   if (renderPhase === RenderPhase.PAGES_READY) {
+    // Incremented when mapping over the pages,
+    // used to make sure that async elements get their
+    // correct index and fetch their saved state.
+    let elementsIndex = -1;
+
     return pages.map((pageComponents, index) => {
       return (
         // Page key must be identical throughout renders!
         // Otherwise it will cause a potential memory leak.
         <Page key={index}>
           {React.Children.map(pageComponents, (child, index) => {
+            // Keeping correct saved state mapping to async elements.
+            elementsIndex++;
             const isAsyncChild = child.props.measureAsync;
 
             if (isAsyncChild) {
               return React.cloneElement(child, {
                 ...child.props,
-                key: index,
-                _savedState: pageGroupContext.savedChildrenStates[index] || null,
+                key: elementsIndex,
+                _savedState: pageGroupContext.savedChildrenStates[elementsIndex] || null,
               });
             }
 

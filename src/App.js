@@ -32,12 +32,13 @@ function App() {
           <div className='two'>Page One</div>
         </PageGroup> */}
         <PageGroup delayed={300} name='Two'>
-          {/* <AsyncChild measureAsync /> */}
           {/* <div className='five'>Page Two</div> */}
-          <div className='one'>Page Two</div>
-          <div className='three'>Page Two</div>
+          {/* <AsyncChild measureAsync /> */}
+          {/* <div className='one'>Page Two</div> */}
+          {/* <AsyncChild measureAsync /> */}
           <AsyncChild measureAsync />
-          <AsyncChild measureAsync />
+          {/* <div className='three'>Page Two</div> */}
+          {/* <AsyncChild measureAsync /> */}
           {/* <AsyncChild measureAsync /> */}
           {/* <Grouper groupEvery={2}>
             <div>A</div>
