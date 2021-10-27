@@ -4,12 +4,19 @@ import { measureHeight, OverflowAuto } from './../MeasureComponent/MeasureCompon
 export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
   const [texts, setTexts] = useState(_savedState ? _savedState.texts : []);
   const asyncElement = useRef();
+  const timeoutId = useRef();
 
   // Async loading data
   useEffect(() => {
-    setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       setTexts(['Async text one', 'Async text two', 'Äsync text three']);
     }, 2000);
+
+    // The above async operation using Timeout, does not take into consideration if the component was already unmounted.
+    // and tries to set its state even though its unmounted, you have to clean after you.
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
   }, []);
 
   useEffect(() => {
