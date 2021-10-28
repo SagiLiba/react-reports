@@ -20,6 +20,16 @@ const reportConfig = {
     { request: promiseTwo, processingFunction: (response) => response.data, putOnProp: 'two' },
     { request: promiseThree, processingFunction: (response) => response.data, putOnProp: 'three' },
   ],
+  header: {
+    display: false,
+    component: () => <div>Custom header</div>,
+    height: 40,
+  },
+  footer: {
+    display: false,
+    component: () => <div>Custom Footer</div>,
+    height: 40,
+  },
 };
 
 function App() {
@@ -31,7 +41,7 @@ function App() {
           <div className='one'>Page One</div>
           <div className='two'>Page One</div>
         </PageGroup> */}
-        <PageGroup delayed={300} name='Two'>
+        <PageGroup delayed={300} name='Page - Vulnerabilities'>
           {/* <div className='five'>Page Two</div> */}
           {/* <AsyncChild measureAsync /> */}
           <div className='one'>Page Two</div>

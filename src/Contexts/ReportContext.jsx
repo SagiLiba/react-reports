@@ -17,6 +17,7 @@ export const ReportProvider = ({ config, children }) => {
   };
 
   const publicOptions = {
+    config,
     registerPageGroup,
     updatePageGroup,
     getPageId,

@@ -13,13 +13,14 @@ import { usePageGroup } from './usePageGroup';
 
 const BasePageGroup = ({ children, delayed, name = '' }) => {
   const pageGroupContext = useContext(PageGroupContext);
-  const { renderPhase, handleChildHeight, handleAsyncChildHeight, spreadGrouperChildren, pages } = usePageGroup({
-    children,
-    delayed,
-    name,
-  });
-
-  const parsedChildren = spreadGrouperChildren(children);
+  const { renderPhase, handleChildHeight, handleAsyncChildHeight, prepareChildrenForMeasurement, pages } = usePageGroup(
+    {
+      children,
+      delayed,
+      name,
+    }
+  );
+  const parsedChildren = prepareChildrenForMeasurement(children);
 
   // ---------------------------
   // PageGroup Rendering Phases

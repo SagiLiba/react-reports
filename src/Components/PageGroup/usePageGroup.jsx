@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GrouperFunction } from '../Grouper/Grouper';
 import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
+import { Header } from './../Header/Header';
 
 export const usePageGroup = ({ children, delayed, name }) => {
   const reportContext = useContext(ReportContext);
@@ -18,6 +19,12 @@ export const usePageGroup = ({ children, delayed, name }) => {
   const spreadGrouperChildren = (children) => {
     let newChildren = [];
 
+    // ------------------------------------------------------------------------------------
+    // The Grouper component, groups together elements.
+    // Here I'm spreading its children into the parent children,
+    // So they will not be rendered under the same container.
+    // Therefore allowing them to split into new pages, and not as a single unit/container.
+    // ------------------------------------------------------------------------------------
     React.Children.forEach(children, (child, index) => {
       const isGrouperChild = child && child.type && child.type.name === 'Grouper';
 
@@ -30,6 +37,10 @@ export const usePageGroup = ({ children, delayed, name }) => {
       }
     });
     return newChildren;
+  };
+
+  const prepareChildrenForMeasurement = (children) => {
+    return spreadGrouperChildren(children);
   };
 
   const updateAsyncChildrenCount = () => {
@@ -64,8 +75,12 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // --------------------------------------------------------------------------
   const splitToPages = () => {
     const _childrenHeights = isEmptyObject(allChildrenHeights) ? childrenHeights : { current: allChildrenHeights };
-    const _children = spreadGrouperChildren(children);
-    const splitPages = fragmentPages({ children: _children, childrenHeights: _childrenHeights });
+    const _children = prepareChildrenForMeasurement(children);
+    const splitPages = fragmentPages({
+      children: _children,
+      childrenHeights: _childrenHeights,
+      config: reportContext.config,
+    });
     setSplitPages(splitPages);
     setRenderPhase(RenderPhase.PAGES_READY);
   };
@@ -118,7 +133,7 @@ export const usePageGroup = ({ children, delayed, name }) => {
     setRenderPhase,
     handleChildHeight,
     handleAsyncChildHeight,
-    spreadGrouperChildren,
+    prepareChildrenForMeasurement,
     pageGroupId,
     pages: splitPages,
   };
