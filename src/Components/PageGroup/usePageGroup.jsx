@@ -4,7 +4,7 @@ import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
 import { Header } from './../Header/Header';
 
-export const usePageGroup = ({ children, delayed, name }) => {
+export const usePageGroup = ({ children, name }) => {
   const reportContext = useContext(ReportContext);
 
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
@@ -112,16 +112,12 @@ export const usePageGroup = ({ children, delayed, name }) => {
   // ---------------------------------------------
   useEffect(() => {
     if (renderPhase === RenderPhase.PAGES_READY) {
-      if (delayed) {
-        setTimeout(() => {
-          reportContext.updatePageGroup({
-            id: pageGroupId,
-            ready: true,
-            pagesAmount: splitPages.length,
-            data: { name },
-          });
-        }, delayed);
-      }
+      reportContext.updatePageGroup({
+        id: pageGroupId,
+        ready: true,
+        pagesAmount: splitPages.length,
+        data: { name },
+      });
     }
     if (renderPhase === RenderPhase.SPLIT_TO_PAGES) {
       splitToPages();

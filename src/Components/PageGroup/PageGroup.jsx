@@ -9,19 +9,17 @@ import { ReportContext } from './../../Contexts/ReportContext';
 import { shouldShowHeader } from './../Header/Header';
 import { shouldShowFooter } from '../Footer/Footer';
 
-// Todo: Remove delayed prop
 // The Children in Measure and in Pages_Ready are DIFFERENT!
 // Thats why async children must have their async data saved in the PageGroupContext
 // and later taken from there.
 
-const BasePageGroup = ({ children, delayed, name = '' }) => {
+const BasePageGroup = ({ children, name = '' }) => {
   const reportContext = useContext(ReportContext);
   const pageGroupContext = useContext(PageGroupContext);
   const config = reportContext.config;
   const { renderPhase, handleChildHeight, handleAsyncChildHeight, prepareChildrenForMeasurement, pages } = usePageGroup(
     {
       children,
-      delayed,
       name,
     }
   );

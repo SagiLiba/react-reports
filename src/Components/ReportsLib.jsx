@@ -103,7 +103,6 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
   if (footerObject && isEmptyObject(footerObject)) {
     showFooter = true;
   }
-  console.log('footer display', showFooter, 'header display', showHeader);
 
   // ------------------------------------------------------------------------------------------------------
   // These objects variables will be used to push new children to pages based on their heights
@@ -122,7 +121,6 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
     childrenHeights: newChildrenHeights,
   };
 
-  console.log(pageParams);
   while (newChildren.length > 0) {
     const pageResult = fillPage(pageParams);
     newChildren.splice(0, pageResult.childrenAdded);
@@ -139,8 +137,5 @@ export const isEmptyObject = (empty) => {
 
 export const isObjectWithRequiredProperties = (obj, requiredKeys) => {
   const objKeys = Object.keys(obj);
-  console.log(objKeys);
-  console.log(requiredKeys);
-  console.log(objKeys.filter((k) => requiredKeys.includes(k)).length === requiredKeys.length);
   return objKeys.filter((k) => requiredKeys.includes(k)).length === requiredKeys.length;
 };
