@@ -57,11 +57,14 @@ function App() {
     <div className='App'>
       <ReportProvider config={reportConfig}>
         <TableOfContents />
-        {/* <PageGroup name='One'>
+        <PageGroup name='Group One' maxPages={2}>
           <div className='one'>Page One</div>
           <div className='two'>Page One</div>
-        </PageGroup> */}
-        <PageGroup name='Page - Vulnerabilities'>
+          <div className='two'>Page One</div>
+          <div className='two'>Page One</div>
+          <div className='two'>Page One</div>
+        </PageGroup>
+        <PageGroup name='Group Two'>
           {/* <div className='five'>Page Two</div> */}
           {/* <AsyncChild measureAsync /> */}
           <div className='one'>Page Two</div>
@@ -88,7 +91,7 @@ function App() {
           </Grouper>
           {/* <div className='four'>Page Two</div> */}
         </PageGroup>
-        {/* <PageGroup name='Three'>
+        {/* <PageGroup name='Group Three'>
           <div className='three'>Page Three</div>
           <div className='two'>Page Three</div>
           <div className='five'>Page Three</div>

@@ -4,7 +4,7 @@ import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
 import { Header } from './../Header/Header';
 
-export const usePageGroup = ({ children, name }) => {
+export const usePageGroup = ({ children, name, maxPages = null }) => {
   const reportContext = useContext(ReportContext);
 
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
@@ -80,6 +80,7 @@ export const usePageGroup = ({ children, name }) => {
       children: _children,
       childrenHeights: _childrenHeights,
       config: reportContext.config,
+      maxPages,
     });
     setSplitPages(splitPages);
     setRenderPhase(RenderPhase.PAGES_READY);

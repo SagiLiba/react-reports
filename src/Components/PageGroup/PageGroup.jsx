@@ -13,7 +13,7 @@ import { shouldShowFooter } from '../Footer/Footer';
 // Thats why async children must have their async data saved in the PageGroupContext
 // and later taken from there.
 
-const BasePageGroup = ({ children, name = '' }) => {
+const BasePageGroup = ({ children, name = '', maxPages = null }) => {
   const reportContext = useContext(ReportContext);
   const pageGroupContext = useContext(PageGroupContext);
   const config = reportContext.config;
@@ -21,6 +21,7 @@ const BasePageGroup = ({ children, name = '' }) => {
     {
       children,
       name,
+      maxPages,
     }
   );
   const parsedChildren = prepareChildrenForMeasurement(children);

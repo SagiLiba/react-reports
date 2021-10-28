@@ -15,35 +15,16 @@ export const PageSize = {
 };
 
 /*
-
-  Default header, user has not set a header
-  Default footer, user has not set a footer
-
-  - Get their size and component
-  - push them into each new page
-  - make sure to adjust height calculations.
-
-  No footer
-  - adjust height calculation
-
-  No header
-  - adjust height calculation
-
-  No header & No Footer
-
-  User set custom Header
-  - Get its component
-  - Get Its height
-  - adjust calculations
-
-  User set custom Footer
-  - Get its component
-  - Get Its height
-  - adjust calculations
-
+  Test cases:
+  - header/footer - empty object {}
+  - header & footer - default
+  - no header & no footer
+  - only no footer
+  - only no header
+  - object with irrelevant props, check it does not change behavior
+  - custom header & custom footer
 */
 
-// TODO: need to account for header & footer display prop
 const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, footerComponent, footerHeight }) => {
   let page = [];
   let sumChildrenHeights = 0;
@@ -77,7 +58,7 @@ const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, fo
   return { page, childrenAdded: i };
 };
 
-export const fragmentPages = ({ children, childrenHeights, config }) => {
+export const fragmentPages = ({ children, childrenHeights, config, maxPages = null }) => {
   let pages = [];
   // Header & Footer here won't be displayed, they are used for calculations.
   const headerObject = config && config.header;
@@ -126,6 +107,11 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
     newChildren.splice(0, pageResult.childrenAdded);
     newChildrenHeights.splice(0, pageResult.childrenAdded);
     pages.push(pageResult.page);
+    // Stop filling pages with child components,
+    // when reaching the maximum allowed pages.
+    if (maxPages === pages.length) {
+      break;
+    }
   }
 
   return pages;
