@@ -35,7 +35,7 @@ export const TableOfContents = (page) => {
   };
 
   return (
-    <Page pageId={'table-of-contents'} automaticPageNumber={false}>
+    <Page pageId={'table-of-contents'} automaticPageNumber={false} showHeader={false} showFooter={false}>
       {reportContext.readyForPrint && renderTable()}
     </Page>
   );

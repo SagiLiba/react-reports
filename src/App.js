@@ -20,16 +20,16 @@ const reportConfig = {
     { request: promiseTwo, processingFunction: (response) => response.data, putOnProp: 'two' },
     { request: promiseThree, processingFunction: (response) => response.data, putOnProp: 'three' },
   ],
-  header: {
-    display: false,
-    component: () => <div>Custom header</div>,
-    height: 40,
-  },
-  footer: {
-    display: false,
-    component: () => <div>Custom Footer</div>,
-    height: 40,
-  },
+  // header: {
+  //   display: false,
+  //   component: () => <div>Custom header</div>,
+  //   height: 40,
+  // },
+  // footer: {
+  //   display: false,
+  //   component: () => <div>Custom Footer</div>,
+  //   height: 40,
+  // },
 };
 
 function App() {
@@ -47,9 +47,9 @@ function App() {
           <div className='one'>Page Two</div>
           <AsyncChild measureAsync />
           <AsyncChild measureAsync />
-          {/* <div className='three'>Page Two</div> */}
-          {/* <AsyncChild measureAsync /> */}
-          {/* <AsyncChild measureAsync /> */}
+          <div className='three'>Page Two</div>
+          <AsyncChild measureAsync />
+          <AsyncChild measureAsync />
           <Grouper groupEvery={4}>
             <div>A</div>
             <div>B</div>

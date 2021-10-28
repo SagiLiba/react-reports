@@ -4,15 +4,20 @@ import React from 'react';
 // Include padding and margins in calculation!
 // -------------------------------------------
 const defaultPadding = 40;
-export const DefaultFooterHeight = 75 - defaultPadding;
+export const DefaultFooterHeight = 76;
 
-export const Footer = ({ pageName = '', footerClass = '', height = DefaultFooterHeight }) => {
+export const Footer = ({
+  pageName = '',
+  footerClass = '',
+  height = DefaultFooterHeight - defaultPadding,
+  pageNumber = '',
+}) => {
   let style = {
     height,
     // Default footer styles,
     // They are ignored if "footerClass" is provided.
     ...(!footerClass && {
-      borderBottom: '1px solid black',
+      borderTop: '1px solid black',
       fontSize: '24px',
       padding: '20px',
       fontWeight: 'bold',
@@ -20,8 +25,9 @@ export const Footer = ({ pageName = '', footerClass = '', height = DefaultFooter
   };
 
   return (
-    <div className={footerClass} style={style}>
-      {pageName} - Footer
+    <div className={`react-reports-footer ${footerClass}`} style={style}>
+      {pageNumber && <div className='page-number'>{pageNumber}</div>}
+      {pageName}
     </div>
   );
 };

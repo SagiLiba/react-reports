@@ -4,9 +4,9 @@ import React from 'react';
 // Include padding and margins in calculation!
 // -------------------------------------------
 const defaultPadding = 40;
-export const DefaultHeaderHeight = 75 - defaultPadding;
+export const DefaultHeaderHeight = 76;
 
-export const Header = ({ pageName = '', headerClass = '', height = DefaultHeaderHeight }) => {
+export const Header = ({ pageName = '', headerClass = '', height = DefaultHeaderHeight - defaultPadding }) => {
   let style = {
     height,
     // Default header styles,

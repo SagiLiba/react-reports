@@ -62,7 +62,7 @@ const fillPage = ({ children, childrenHeights, header, headerHeight, footer, foo
 
   // Add children to page
   for (var i = 0; i < children.length; i++) {
-    const childHeight = childrenHeights.current[i];
+    const childHeight = childrenHeights[i];
     const child = children[i];
     // If reached page height limit, stop adding children.
     if (sumChildrenHeights + childHeight > pageHeight) {
@@ -72,19 +72,6 @@ const fillPage = ({ children, childrenHeights, header, headerHeight, footer, foo
       sumChildrenHeights += childHeight;
       page.push(child);
     }
-  }
-
-  // Only header
-  if (hasHeader && !hasFooter) {
-    page = [header, ...page];
-  }
-  // Only footer
-  if (hasFooter && !hasHeader) {
-    page.push(footer);
-  }
-  // Header and footer
-  if (hasHeader && hasFooter) {
-    page = [header, ...page, footer];
   }
 
   return { page, childrenAdded: i };
@@ -97,7 +84,13 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
   const headerHeight = (config && config.header && config.header.height) || DefaultHeaderHeight;
   const footer = (config && config.footer && config.footer.component) || <Footer />;
   const footerHeight = (config && config.footer && config.footer.height) || DefaultFooterHeight;
+  // ------------------------------------------------------------------------------------------------------
+  // These objects variables will be used to push new children to pages based on their heights
+  // In order to advance the calculation, I have to remove the newChildren and newChildrenHeights
+  // after each calculation until their empty.
   let newChildren = [...children]; // will be spliced until its empty.
+  let newChildrenHeights = Object.values(childrenHeights.current); // // will be truncated until its empty.
+  // ------------------------------------------------------------------------------------------------------
 
   const pageParams = {
     header,
@@ -105,12 +98,13 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
     footer,
     footerHeight,
     children: newChildren,
-    childrenHeights,
+    childrenHeights: newChildrenHeights,
   };
 
   while (newChildren.length > 0) {
     const pageResult = fillPage(pageParams);
     newChildren.splice(0, pageResult.childrenAdded);
+    newChildrenHeights.splice(0, pageResult.childrenAdded);
     pages.push(pageResult.page);
   }
 

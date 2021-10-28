@@ -1,8 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ReportContext } from '../../Contexts/ReportContext';
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Header/Header';
 import './Page.scss';
 
-export const Page = ({ children, pageId, automaticPageNumber = true }) => {
+export const Page = ({
+  children,
+  pageId,
+  automaticPageNumber = true,
+  name = '',
+  showHeader = true,
+  showFooter = true,
+}) => {
   const reportContext = useContext(ReportContext);
   const [pageNumber, setPageNumber] = useState('');
 
@@ -18,9 +27,10 @@ export const Page = ({ children, pageId, automaticPageNumber = true }) => {
 
   return (
     <article className={`page`} id={pageElementId}>
+      {showHeader && <Header pageName={name} />}
       {children}
       {/* Remove this line number, it is not part of the page calculation */}
-      <center>{pageNumber}</center>
+      {showFooter && <Footer pageName={''} pageNumber={pageNumber} />}
     </article>
   );
 };

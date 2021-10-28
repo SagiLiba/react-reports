@@ -66,7 +66,7 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
       return (
         // Page key must be identical throughout renders!
         // Otherwise it will cause a potential memory leak.
-        <Page key={index}>
+        <Page key={index} name={name}>
           {React.Children.map(pageComponents, (child, index) => {
             // Keeping correct saved state mapping to async elements.
             elementsIndex++;

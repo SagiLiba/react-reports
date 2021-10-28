@@ -17,6 +17,18 @@
   box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
   margin: 10mm auto;
   overflow: hidden;
+  position: relative;
+  .react-reports-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 40px);
+    .page-number {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+  }
 }
 
 @media print {
