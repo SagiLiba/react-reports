@@ -76,8 +76,8 @@ function App() {
     <div className='App'>
       <ReportProvider config={reportConfig}>
         <TableOfContents />
-        <PageGroup name='Group One' maxPages={10} repeating={PageGroupRepeating}>
-          <div className='one'>Page One</div>
+        <PageGroup name='Group One' maxPages={2} repeating={PageGroupRepeating}>
+          <div className='one'>Page One - with margins</div>
           <div className='two'>Page One</div>
           <div className='two'>Page One</div>
           <div>C</div>
@@ -97,7 +97,7 @@ function App() {
         {/* <PageGroup name='Group Two'> */}
         {/* <div className='five'>Page Two</div> */}
         {/* <AsyncChild measureAsync /> */}
-        {/* <div className='one'>Page Two</div> */}
+        {/* <div className='one'>Page Two - with margins</div> */}
         {/* <AsyncChild measureAsync /> */}
         {/* <AsyncChild measureAsync /> */}
         {/* <div className='three'>Page Two</div> */}
@@ -130,7 +130,7 @@ function App() {
           <div className='four'>Page Three</div>
           <div className='four'>Page Three</div>
           <div className='four'>Page Three</div>
-          <div className='one'>Page Three</div>
+          <div className='one'>Page Three - with margins</div>
         </PageGroup> */}
       </ReportProvider>
     </div>

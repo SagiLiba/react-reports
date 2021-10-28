@@ -46,9 +46,9 @@ export const ReportProvider = ({ config, children }) => {
   // -------------------------------------------------------------------------
   return (
     <ReportContext.Provider value={publicOptions}>
-      <section className='report'>
+      <section className='rr-report'>
         {children}
-        {readyForPrint && <div id={'ready-for-print'} />}
+        {readyForPrint && <div id={'rr-ready-for-print'} />}
       </section>
     </ReportContext.Provider>
   );

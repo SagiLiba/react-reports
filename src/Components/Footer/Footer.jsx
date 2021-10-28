@@ -26,8 +26,8 @@ export const Footer = ({
   };
 
   return (
-    <div className={`react-reports-footer ${footerClass}`} style={style}>
-      {pageNumber && <div className='page-number'>{pageNumber}</div>}
+    <div className={`rr-footer ${footerClass}`} style={style}>
+      {pageNumber && <div className='rr-page-number'>{pageNumber}</div>}
     </div>
   );
 };

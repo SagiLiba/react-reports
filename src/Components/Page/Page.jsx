@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ReportContext } from '../../Contexts/ReportContext';
 import { Footer } from '../Footer/Footer';
 import { Header } from '../Header/Header';
-import './Page.scss';
 
 export const Page = ({
   children,
@@ -67,7 +66,7 @@ export const Page = ({
   );
 
   return (
-    <article className={`page`} id={pageElementId}>
+    <article className={`rr-page`} id={pageElementId}>
       {showHeader && renderHeader()}
       {showRepeatingTopComponent && renderRepeatingComponent('top')}
       {children}

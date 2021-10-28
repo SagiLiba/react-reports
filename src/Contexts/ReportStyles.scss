@@ -1,14 +1,46 @@
-@page {
-  // Print page settings
-  size: A4 portrait !important;
-  margin: 0;
-  -webkit-print-color-adjust: exact;
-  -webkit-print-color-adjust: exact !important;
+@mixin PageSize() {
+  width: 21cm;
+  height: 29.67cm;
 }
 
-.report {
+.rr-report {
   * {
     -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
     color-adjust: exact !important; /*Firefox*/
+  }
+
+  .rr-page {
+    @include PageSize;
+    background: white;
+    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+    margin: 10mm auto;
+    overflow: hidden;
+    position: relative;
+    .rr-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: calc(100% - 40px);
+      .rr-page-number {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+      }
+    }
+  }
+
+  @media print {
+    @page {
+      // Print page settings
+      size: A4 portrait;
+      margin: 0;
+      -webkit-print-color-adjust: exact;
+      -webkit-print-color-adjust: exact !important;
+    }
+    body,
+    .rr-page {
+      margin: 0;
+      box-shadow: 0;
+    }
   }
 }
