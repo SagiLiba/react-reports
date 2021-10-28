@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmptyObject, isObjectWithRequiredProperties } from '../ReportsLib';
 
 // -------------------------------------------
 // Include padding and margins in calculation!
@@ -27,26 +28,29 @@ export const Footer = ({
   return (
     <div className={`react-reports-footer ${footerClass}`} style={style}>
       {pageNumber && <div className='page-number'>{pageNumber}</div>}
-      {pageName}
     </div>
   );
 };
 
 export const shouldShowFooter = (config) => {
-  const useDefaultFooter = !!(config && !config.footer);
-
-  if (useDefaultFooter) {
-    return true;
-  }
-
-  const footerDisplay = config && config.footer && config.footer.display;
+  const footerObject = config && config.footer;
+  const footerDisplay = footerObject && footerObject.display;
+  const footerComponent = footerObject && footerObject.component;
+  const footerHeight = footerObject && footerObject.height;
+  const useDefaultFooter =
+    !config ||
+    !footerObject ||
+    isEmptyObject(footerObject) ||
+    !isObjectWithRequiredProperties(footerObject, ['height', 'display', 'component']) ||
+    (typeof footerDisplay === 'boolean' && footerDisplay === true && (!footerComponent || !footerHeight));
 
   if (typeof footerDisplay === 'boolean' && footerDisplay === false) {
     return false;
   }
 
-  const footerComponent = config && config.footer && config.footer.component;
-  const footerHeight = config && config.footer && config.footer.height;
+  if (useDefaultFooter) {
+    return true;
+  }
 
   if (!footerComponent || !footerHeight) {
     return false;

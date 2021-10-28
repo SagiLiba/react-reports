@@ -40,14 +40,15 @@ const reportConfig = {
     { request: promiseThree, processingFunction: (response) => response.data, putOnProp: 'three' },
   ],
   header: {
-    display: false,
-    // component: CustomHeader,
-    // height: 88, // Any css you added to custom header must be accounted for
+    display: true,
+    component: CustomHeader,
+    height: 88, // Any css margin / padding you added to custom header must be accounted for
   },
+
   footer: {
-    display: false,
-    //   component: CustomFooter,
-    //   height: 108, // Any css you added to custom footer must be accounted for
+    // display: false,
+    component: CustomFooter,
+    height: 108, // Any css margin / padding you added to custom footer must be accounted for
   },
 };
 

@@ -44,12 +44,12 @@ export const PageSize = {
 */
 
 // TODO: need to account for header & footer display prop
-const fillPage = ({ children, childrenHeights, header, headerHeight, footer, footerHeight }) => {
+const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, footerComponent, footerHeight }) => {
   let page = [];
   let sumChildrenHeights = 0;
   let pageHeight = PageSize.A4.height;
-  const hasHeader = header && headerHeight;
-  const hasFooter = footer && footerHeight;
+  const hasHeader = headerComponent && headerHeight;
+  const hasFooter = footerComponent && footerHeight;
 
   // Account for header height
   if (hasHeader) {
@@ -80,15 +80,31 @@ const fillPage = ({ children, childrenHeights, header, headerHeight, footer, foo
 export const fragmentPages = ({ children, childrenHeights, config }) => {
   let pages = [];
   // Header & Footer here won't be displayed, they are used for calculations.
-  const header = (config && config.header && config.header.component) || <Header />;
-  const headerHeight = (config && config.header && config.header.height) || DefaultHeaderHeight;
-  const headerDisplay = config && config.header && config.header.display;
-  const showHeader = (typeof headerDisplay === 'boolean' && headerDisplay === true) || !headerDisplay;
+  const headerObject = config && config.header;
+  const headerComponent = (headerObject && headerObject.component) || <Header />;
+  const headerHeight = (headerObject && headerObject.height) || DefaultHeaderHeight;
+  const headerDisplay = headerObject && headerObject.display;
+  let showHeader =
+    (typeof headerDisplay === 'boolean' && headerDisplay === true) ||
+    (typeof headerDisplay !== 'boolean' && !headerDisplay);
 
-  const footer = (config && config.footer && config.footer.component) || <Footer />;
-  const footerHeight = (config && config.footer && config.footer.height) || DefaultFooterHeight;
-  const footerDisplay = config && config.footer && config.footer.display;
-  const showFooter = (typeof footerDisplay === 'boolean' && footerDisplay === true) || !footerDisplay;
+  if (headerObject && isEmptyObject(headerObject)) {
+    showHeader = true;
+  }
+
+  const footerObject = config && config.footer;
+  const footerComponent = (footerObject && footerObject.component) || <Footer />;
+  const footerHeight = (footerObject && footerObject.height) || DefaultFooterHeight;
+  const footerDisplay = footerObject && footerObject.display;
+  let showFooter =
+    (typeof footerDisplay === 'boolean' && footerDisplay === true) ||
+    (typeof footerDisplay !== 'boolean' && !footerDisplay);
+
+  if (footerObject && isEmptyObject(footerObject)) {
+    showFooter = true;
+  }
+  console.log('footer display', showFooter, 'header display', showHeader);
+
   // ------------------------------------------------------------------------------------------------------
   // These objects variables will be used to push new children to pages based on their heights
   // In order to advance the calculation, I have to remove the newChildren and newChildrenHeights
@@ -98,14 +114,15 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
   // ------------------------------------------------------------------------------------------------------
 
   const pageParams = {
-    header: showHeader ? header : null,
+    headerComponent: showHeader ? headerComponent : null,
     headerHeight: showHeader ? headerHeight : null,
-    footer: showFooter ? footer : null,
+    footerComponent: showFooter ? footerComponent : null,
     footerHeight: showFooter ? footerHeight : null,
     children: newChildren,
     childrenHeights: newChildrenHeights,
   };
 
+  console.log(pageParams);
   while (newChildren.length > 0) {
     const pageResult = fillPage(pageParams);
     newChildren.splice(0, pageResult.childrenAdded);
@@ -118,4 +135,12 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
 
 export const isEmptyObject = (empty) => {
   return Object.keys(empty).length === 0 && empty.constructor === Object;
+};
+
+export const isObjectWithRequiredProperties = (obj, requiredKeys) => {
+  const objKeys = Object.keys(obj);
+  console.log(objKeys);
+  console.log(requiredKeys);
+  console.log(objKeys.filter((k) => requiredKeys.includes(k)).length === requiredKeys.length);
+  return objKeys.filter((k) => requiredKeys.includes(k)).length === requiredKeys.length;
 };

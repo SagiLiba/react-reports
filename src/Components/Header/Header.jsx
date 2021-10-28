@@ -1,4 +1,6 @@
 import React from 'react';
+import { isEmptyObject } from '../ReportsLib';
+import { isObjectWithRequiredProperties } from './../ReportsLib';
 
 // -------------------------------------------
 // Include padding and margins in calculation!
@@ -27,20 +29,24 @@ export const Header = ({ pageName = '', headerClass = '', height = DefaultHeader
 };
 
 export const shouldShowHeader = (config) => {
-  const useDefaultHeader = !!(config && !config.header);
-
-  if (useDefaultHeader) {
-    return true;
-  }
-
-  const headerDisplay = config && config.header && config.header.display;
+  const headerObject = config && config.header;
+  const headerDisplay = headerObject && headerObject.display;
+  const headerComponent = headerObject && headerObject.component;
+  const headerHeight = headerObject && headerObject.height;
+  const useDefaultHeader =
+    !config ||
+    !headerObject ||
+    isEmptyObject(headerObject) ||
+    !isObjectWithRequiredProperties(headerObject, ['height', 'display', 'component']) ||
+    (typeof headerDisplay === 'boolean' && headerDisplay === true && (!headerComponent || !headerHeight));
 
   if (typeof headerDisplay === 'boolean' && headerDisplay === false) {
     return false;
   }
 
-  const headerComponent = config && config.header && config.header.component;
-  const headerHeight = config && config.header && config.header.height;
+  if (useDefaultHeader) {
+    return true;
+  }
 
   if (!headerComponent || !headerHeight) {
     return false;
