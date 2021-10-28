@@ -106,7 +106,7 @@ export const useReportDataHandler = ({ config }) => {
     }
 
     // InitialValues were handled
-    const configHasInitialValues = !!config.initialValues && config.initialValues.length > 0;
+    const configHasInitialValues = config && !!config.initialValues && config.initialValues.length > 0;
     const initialValuesHandled = Object.values(reportData.initial).length > 0;
 
     if (configHasInitialValues && initialValuesHandled) {
