@@ -47,7 +47,7 @@ body {
     background: black;
     display: flex;
     align-items: center;
-    width: inherit;
+    width: calc(inherit - 48px);
   }
 
   .custom-footer {
@@ -58,6 +58,28 @@ body {
     background: black;
     display: flex;
     align-items: center;
-    width: inherit;
+    width: calc(inherit - 48px);
+  }
+  .custom-top {
+    height: 30px;
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+    background: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(inherit - 20px);
+  }
+  .custom-bottom {
+    height: 30px;
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+    background: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(inherit - 20px);
   }
 }

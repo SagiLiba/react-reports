@@ -11,6 +11,14 @@ const promiseOne = new Promise((resolve) => resolve({ status: true, data: ['one'
 const promiseTwo = new Promise((resolve) => resolve({ status: true, data: ['four', 'five', 'six'] }));
 const promiseThree = new Promise((resolve, reject) => reject('Error'));
 
+const CustomRepeatingTop = () => {
+  return <div className={'custom-top'}>Repeating Top component</div>;
+};
+
+const CustomRepeatingBottom = () => {
+  return <div className={'custom-bottom'}>Repeating Bottom component</div>;
+};
+
 const CustomFooter = ({ pageName = '', pageNumber = '' }) => {
   return (
     <ToBottom>
@@ -52,28 +60,50 @@ const reportConfig = {
   },
 };
 
+const PageGroupRepeating = {
+  top: {
+    component: CustomRepeatingTop,
+    height: 50,
+  },
+  bottom: {
+    component: CustomRepeatingBottom,
+    height: 50,
+  },
+};
+
 function App() {
   return (
     <div className='App'>
       <ReportProvider config={reportConfig}>
         <TableOfContents />
-        <PageGroup name='Group One' maxPages={2}>
+        <PageGroup name='Group One' maxPages={10} repeating={PageGroupRepeating}>
           <div className='one'>Page One</div>
           <div className='two'>Page One</div>
           <div className='two'>Page One</div>
+          <div>C</div>
+          <div>D</div>
+          <div>E</div>
+          <div>F</div>
+          <div>G</div>
+          <div>H</div>
+          <div>I</div>
+          <div>J</div>
+          <div>K</div>
+          <div>L</div>
+          <div>M</div>
           <div className='two'>Page One</div>
           <div className='two'>Page One</div>
         </PageGroup>
-        <PageGroup name='Group Two'>
-          {/* <div className='five'>Page Two</div> */}
-          {/* <AsyncChild measureAsync /> */}
-          <div className='one'>Page Two</div>
-          {/* <AsyncChild measureAsync /> */}
-          {/* <AsyncChild measureAsync /> */}
-          <div className='three'>Page Two</div>
-          {/* <AsyncChild measureAsync /> */}
-          {/* <AsyncChild measureAsync /> */}
-          <Grouper groupEvery={4}>
+        {/* <PageGroup name='Group Two'> */}
+        {/* <div className='five'>Page Two</div> */}
+        {/* <AsyncChild measureAsync /> */}
+        {/* <div className='one'>Page Two</div> */}
+        {/* <AsyncChild measureAsync /> */}
+        {/* <AsyncChild measureAsync /> */}
+        {/* <div className='three'>Page Two</div> */}
+        {/* <AsyncChild measureAsync /> */}
+        {/* <AsyncChild measureAsync /> */}
+        {/* <Grouper groupEvery={4}>
             <div>A</div>
             <div>B</div>
             <div>C</div>
@@ -88,9 +118,9 @@ function App() {
             <div>L</div>
             <div>M</div>
             <div>O</div>
-          </Grouper>
-          {/* <div className='four'>Page Two</div> */}
-        </PageGroup>
+          </Grouper> */}
+        {/* <div className='four'>Page Two</div> */}
+        {/* </PageGroup> */}
         {/* <PageGroup name='Group Three'>
           <div className='three'>Page Three</div>
           <div className='two'>Page Three</div>

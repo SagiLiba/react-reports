@@ -25,12 +25,25 @@ export const PageSize = {
   - custom header & custom footer
 */
 
-const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, footerComponent, footerHeight }) => {
+const fillPage = ({
+  children,
+  childrenHeights,
+  headerComponent,
+  headerHeight,
+  footerComponent,
+  footerHeight,
+  repeatingTopComponent,
+  repeatingTopHeight,
+  repeatingBottomComponent,
+  repeatingBottomHeight,
+}) => {
   let page = [];
   let sumChildrenHeights = 0;
   let pageHeight = PageSize.A4.height;
   const hasHeader = headerComponent && headerHeight;
   const hasFooter = footerComponent && footerHeight;
+  const hasRepeatingTopComponent = repeatingTopComponent && repeatingTopHeight;
+  const hasRepeatingBottomComponent = repeatingBottomComponent && repeatingBottomHeight;
 
   // Account for header height
   if (hasHeader) {
@@ -39,6 +52,14 @@ const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, fo
   // Account for footer height
   if (hasFooter) {
     pageHeight -= footerHeight;
+  }
+  // Account for repeating top height
+  if (hasRepeatingTopComponent) {
+    pageHeight -= repeatingTopHeight;
+  }
+  // Account for repeating bottom height
+  if (hasRepeatingBottomComponent) {
+    pageHeight -= repeatingBottomHeight;
   }
 
   // Add children to page
@@ -58,9 +79,15 @@ const fillPage = ({ children, childrenHeights, headerComponent, headerHeight, fo
   return { page, childrenAdded: i };
 };
 
-export const fragmentPages = ({ children, childrenHeights, config, maxPages = null }) => {
+export const fragmentPages = ({ children, childrenHeights, config, maxPages = null, repeating = null }) => {
   let pages = [];
-  // Header & Footer here won't be displayed, they are used for calculations.
+  // ---------------------------------------------------------------
+  // Header, Footer, repeatingTopComponent, repeatingBottomComponent
+  // won't be displayed, they are used for calculations.
+  // ---------------------------------------------------------------
+
+  // Handle Header
+  // -------------
   const headerObject = config && config.header;
   const headerComponent = (headerObject && headerObject.component) || <Header />;
   const headerHeight = (headerObject && headerObject.height) || DefaultHeaderHeight;
@@ -73,6 +100,9 @@ export const fragmentPages = ({ children, childrenHeights, config, maxPages = nu
     showHeader = true;
   }
 
+  // -------------
+  // Handle Footer
+  // -------------
   const footerObject = config && config.footer;
   const footerComponent = (footerObject && footerObject.component) || <Footer />;
   const footerHeight = (footerObject && footerObject.height) || DefaultFooterHeight;
@@ -84,6 +114,22 @@ export const fragmentPages = ({ children, childrenHeights, config, maxPages = nu
   if (footerObject && isEmptyObject(footerObject)) {
     showFooter = true;
   }
+
+  // --------------------
+  // Handle Repeating Top
+  // --------------------
+  const repeatingTopObj = repeating && repeating.top;
+  const repeatingTopComponent = repeatingTopObj && repeatingTopObj.component;
+  const repeatingTopHeight = repeatingTopObj && repeatingTopObj.height;
+  let showRepeatingTopComponent = showRepeatingComponent(repeating, 'top');
+
+  // --------------------
+  // Handle Repeating Top
+  // --------------------
+  const repeatingBottomObj = repeating && repeating.bottom;
+  const repeatingBottomComponent = repeatingBottomObj && repeatingBottomObj.component;
+  const repeatingBottomHeight = repeatingBottomObj && repeatingBottomObj.height;
+  let showRepeatingBottomComponent = showRepeatingComponent(repeating, 'bottom');
 
   // ------------------------------------------------------------------------------------------------------
   // These objects variables will be used to push new children to pages based on their heights
@@ -98,6 +144,10 @@ export const fragmentPages = ({ children, childrenHeights, config, maxPages = nu
     headerHeight: showHeader ? headerHeight : null,
     footerComponent: showFooter ? footerComponent : null,
     footerHeight: showFooter ? footerHeight : null,
+    repeatingTopComponent: showRepeatingTopComponent ? repeatingTopComponent : null,
+    repeatingTopHeight: showRepeatingTopComponent ? repeatingTopHeight : null,
+    repeatingBottomComponent: showRepeatingBottomComponent ? repeatingBottomComponent : null,
+    repeatingBottomHeight: showRepeatingBottomComponent ? repeatingBottomHeight : null,
     children: newChildren,
     childrenHeights: newChildrenHeights,
   };
@@ -124,4 +174,15 @@ export const isEmptyObject = (empty) => {
 export const isObjectWithRequiredProperties = (obj, requiredKeys) => {
   const objKeys = Object.keys(obj);
   return objKeys.filter((k) => requiredKeys.includes(k)).length === requiredKeys.length;
+};
+
+export const showRepeatingComponent = (repeating, property) => {
+  const propertyObj = repeating && repeating[property];
+  const component = propertyObj && propertyObj.component;
+  const height = propertyObj && propertyObj.height;
+
+  if (component && height) {
+    return true;
+  }
+  return false;
 };

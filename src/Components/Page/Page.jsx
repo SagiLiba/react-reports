@@ -11,6 +11,9 @@ export const Page = ({
   name = '',
   showHeader = true,
   showFooter = true,
+  repeating = null,
+  showRepeatingTopComponent = false,
+  showRepeatingBottomComponent = false,
 }) => {
   const reportContext = useContext(ReportContext);
   const config = reportContext.config;
@@ -35,7 +38,7 @@ export const Page = ({
     }
 
     return <Header pageName={name} pageNumber={pageNumber} />;
-  }, [showHeader, pageNumber]);
+  }, [showHeader, name, pageNumber]);
 
   const renderFooter = useCallback(() => {
     const FooterComponent = config && config.footer && config.footer.component;
@@ -46,13 +49,29 @@ export const Page = ({
     }
 
     return <Footer pageName={name} pageNumber={pageNumber} />;
-  }, [showFooter, pageNumber]);
+  }, [showFooter, name, pageNumber]);
+
+  const renderRepeatingComponent = useCallback(
+    (property) => {
+      const propertyObj = repeating && repeating[property];
+      const Component = propertyObj && propertyObj.component;
+      const height = propertyObj && propertyObj.height;
+
+      if (Component && height) {
+        return <Component pageName={name} pageNumber={pageNumber} />;
+      }
+
+      return null;
+    },
+    [repeating, showRepeatingTopComponent, showRepeatingBottomComponent, name, pageNumber]
+  );
 
   return (
     <article className={`page`} id={pageElementId}>
       {showHeader && renderHeader()}
+      {showRepeatingTopComponent && renderRepeatingComponent('top')}
       {children}
-      {/* Remove this line number, it is not part of the page calculation */}
+      {showRepeatingBottomComponent && renderRepeatingComponent('bottom')}
       {showFooter && renderFooter()}
     </article>
   );
