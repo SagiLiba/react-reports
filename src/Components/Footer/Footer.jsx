@@ -31,3 +31,26 @@ export const Footer = ({
     </div>
   );
 };
+
+export const shouldShowFooter = (config) => {
+  const useDefaultFooter = !!(config && !config.footer);
+
+  if (useDefaultFooter) {
+    return true;
+  }
+
+  const footerDisplay = config && config.footer && config.footer.display;
+
+  if (typeof footerDisplay === 'boolean' && footerDisplay === false) {
+    return false;
+  }
+
+  const footerComponent = config && config.footer && config.footer.component;
+  const footerHeight = config && config.footer && config.footer.height;
+
+  if (!footerComponent || !footerHeight) {
+    return false;
+  }
+
+  return true;
+};

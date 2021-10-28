@@ -82,8 +82,13 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
   // Header & Footer here won't be displayed, they are used for calculations.
   const header = (config && config.header && config.header.component) || <Header />;
   const headerHeight = (config && config.header && config.header.height) || DefaultHeaderHeight;
+  const headerDisplay = config && config.header && config.header.display;
+  const showHeader = (typeof headerDisplay === 'boolean' && headerDisplay === true) || !headerDisplay;
+
   const footer = (config && config.footer && config.footer.component) || <Footer />;
   const footerHeight = (config && config.footer && config.footer.height) || DefaultFooterHeight;
+  const footerDisplay = config && config.footer && config.footer.display;
+  const showFooter = (typeof footerDisplay === 'boolean' && footerDisplay === true) || !footerDisplay;
   // ------------------------------------------------------------------------------------------------------
   // These objects variables will be used to push new children to pages based on their heights
   // In order to advance the calculation, I have to remove the newChildren and newChildrenHeights
@@ -93,10 +98,10 @@ export const fragmentPages = ({ children, childrenHeights, config }) => {
   // ------------------------------------------------------------------------------------------------------
 
   const pageParams = {
-    header,
-    headerHeight,
-    footer,
-    footerHeight,
+    header: showHeader ? header : null,
+    headerHeight: showHeader ? headerHeight : null,
+    footer: showFooter ? footer : null,
+    footerHeight: showFooter ? footerHeight : null,
     children: newChildren,
     childrenHeights: newChildrenHeights,
   };

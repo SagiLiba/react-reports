@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { PageGroupContext, PageGroupProvider } from '../../Contexts/PageGroupContext';
 import { GrouperFunction } from '../Grouper/Grouper';
 import { MeasureComponent } from '../MeasureComponent/MeasureComponent';
 import { Page } from '../Page/Page';
 import { RenderPhase } from '../ReportsLib';
 import { usePageGroup } from './usePageGroup';
+import { ReportContext } from './../../Contexts/ReportContext';
+import { shouldShowHeader } from './../Header/Header';
+import { shouldShowFooter } from '../Footer/Footer';
 
 // Todo: Remove delayed prop
 // The Children in Measure and in Pages_Ready are DIFFERENT!
@@ -12,7 +15,9 @@ import { usePageGroup } from './usePageGroup';
 // and later taken from there.
 
 const BasePageGroup = ({ children, delayed, name = '' }) => {
+  const reportContext = useContext(ReportContext);
   const pageGroupContext = useContext(PageGroupContext);
+  const config = reportContext.config;
   const { renderPhase, handleChildHeight, handleAsyncChildHeight, prepareChildrenForMeasurement, pages } = usePageGroup(
     {
       children,
@@ -21,6 +26,8 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
     }
   );
   const parsedChildren = prepareChildrenForMeasurement(children);
+  const showHeader = useMemo(() => shouldShowHeader(config), [config]);
+  const showFooter = useMemo(() => shouldShowFooter(config), [config]);
 
   // ---------------------------
   // PageGroup Rendering Phases
@@ -53,9 +60,6 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
   // Return all created pages:
   // -------------------------
 
-  /**
-   * Every map s
-   */
   if (renderPhase === RenderPhase.PAGES_READY) {
     // Incremented when mapping over the pages,
     // used to make sure that async elements get their
@@ -66,7 +70,7 @@ const BasePageGroup = ({ children, delayed, name = '' }) => {
       return (
         // Page key must be identical throughout renders!
         // Otherwise it will cause a potential memory leak.
-        <Page key={index} name={name}>
+        <Page key={index} name={name} showHeader={showHeader} showFooter={showFooter}>
           {React.Children.map(pageComponents, (child, index) => {
             // Keeping correct saved state mapping to async elements.
             elementsIndex++;

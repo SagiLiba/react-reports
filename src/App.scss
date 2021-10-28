@@ -39,4 +39,25 @@ body {
   .async-text {
     margin: 30px;
   }
+  .custom-header {
+    height: 40px;
+    padding: 24px;
+    font-weight: bold;
+    color: white;
+    background: black;
+    display: flex;
+    align-items: center;
+    width: inherit;
+  }
+
+  .custom-footer {
+    height: 60px;
+    padding: 24px;
+    font-weight: bold;
+    color: white;
+    background: black;
+    display: flex;
+    align-items: center;
+    width: inherit;
+  }
 }

@@ -5,10 +5,29 @@ import { Grouper } from './Components/Grouper/Grouper';
 import { PageGroup } from './Components/PageGroup/PageGroup';
 import { TableOfContents } from './Components/TableOfContents/TableOfContents';
 import { ReportProvider } from './Contexts/ReportContext';
+import { ToBottom } from './Functions';
 
 const promiseOne = new Promise((resolve) => resolve({ status: true, data: ['one', 'two', 'three'] }));
 const promiseTwo = new Promise((resolve) => resolve({ status: true, data: ['four', 'five', 'six'] }));
 const promiseThree = new Promise((resolve, reject) => reject('Error'));
+
+const CustomFooter = ({ pageName = '', pageNumber = '' }) => {
+  return (
+    <ToBottom>
+      <div className='custom-footer'>
+        Footer - {pageName} - {pageNumber}
+      </div>
+    </ToBottom>
+  );
+};
+
+const CustomHeader = ({ pageName = '', pageNumber = '' }) => {
+  return (
+    <div className='custom-header'>
+      Header - {pageName} - {pageNumber}
+    </div>
+  );
+};
 
 const reportConfig = {
   initialValues: [
@@ -20,16 +39,16 @@ const reportConfig = {
     { request: promiseTwo, processingFunction: (response) => response.data, putOnProp: 'two' },
     { request: promiseThree, processingFunction: (response) => response.data, putOnProp: 'three' },
   ],
-  // header: {
-  //   display: false,
-  //   component: () => <div>Custom header</div>,
-  //   height: 40,
-  // },
-  // footer: {
-  //   display: false,
-  //   component: () => <div>Custom Footer</div>,
-  //   height: 40,
-  // },
+  header: {
+    display: false,
+    // component: CustomHeader,
+    // height: 88, // Any css you added to custom header must be accounted for
+  },
+  footer: {
+    display: false,
+    //   component: CustomFooter,
+    //   height: 108, // Any css you added to custom footer must be accounted for
+  },
 };
 
 function App() {

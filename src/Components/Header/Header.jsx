@@ -25,3 +25,26 @@ export const Header = ({ pageName = '', headerClass = '', height = DefaultHeader
     </div>
   );
 };
+
+export const shouldShowHeader = (config) => {
+  const useDefaultHeader = !!(config && !config.header);
+
+  if (useDefaultHeader) {
+    return true;
+  }
+
+  const headerDisplay = config && config.header && config.header.display;
+
+  if (typeof headerDisplay === 'boolean' && headerDisplay === false) {
+    return false;
+  }
+
+  const headerComponent = config && config.header && config.header.component;
+  const headerHeight = config && config.header && config.header.height;
+
+  if (!headerComponent || !headerHeight) {
+    return false;
+  }
+
+  return true;
+};
