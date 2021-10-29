@@ -4,6 +4,8 @@
 }
 
 .rr-report {
+  opacity: 0;
+  transition: opacity 1s ease;
   * {
     -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
     color-adjust: exact !important; /*Firefox*/
@@ -43,4 +45,31 @@
       box-shadow: 0;
     }
   }
+}
+
+@keyframes fadeInFadeOut {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.rr-loader {
+  animation: 1s infinite alternate fadeInFadeOut;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rr-report-ready {
+  opacity: 1;
 }

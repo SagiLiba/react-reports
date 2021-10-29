@@ -44,9 +44,12 @@ export const ReportProvider = ({ config, children }) => {
   // -------------------------------------------------------------------------
   // Start rendering the report, only after APIs & initialValues were handled.
   // -------------------------------------------------------------------------
+  const fadeInClass = readyForPrint ? 'rr-report-ready' : '';
+
   return (
     <ReportContext.Provider value={publicOptions}>
-      <section className='rr-report'>
+      {!readyForPrint && <div className='rr-loader'>Generating Report</div>}
+      <section className={`rr-report ${fadeInClass}`}>
         {children}
         {readyForPrint && <div id={'rr-ready-for-print'} />}
       </section>
