@@ -82,4 +82,16 @@ body {
     justify-content: center;
     width: calc(inherit - 20px);
   }
+  .custom-loader {
+    position: fixed;
+    z-index: 1;
+    color: blue;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

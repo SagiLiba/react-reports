@@ -37,6 +37,10 @@ const CustomHeader = ({ pageName = '', pageNumber = '' }) => {
   );
 };
 
+const CustomLoader = () => {
+  return <div className='custom-loader'>Load</div>;
+};
+
 const reportConfig = {
   initialValues: [
     { putOnProp: 'four', value: { someAPI: 'Four Values' } },
@@ -47,6 +51,10 @@ const reportConfig = {
     { request: promiseTwo, processingFunction: (response) => response.data, putOnProp: 'two' },
     { request: promiseThree, processingFunction: (response) => response.data, putOnProp: 'three' },
   ],
+  loader: {
+    // text: 'Generating Report, Please wait...',
+    // component: CustomLoader, // takes precedence over the text property.
+  },
   header: {
     display: true,
     component: CustomHeader,

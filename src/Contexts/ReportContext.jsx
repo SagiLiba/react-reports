@@ -16,6 +16,19 @@ export const ReportProvider = ({ config, children }) => {
     return pageCounter.current;
   };
 
+  const renderLoader = () => {
+    let loaderText = config && config.loader && config.loader.text;
+    loaderText = loaderText ? loaderText : 'Generating Report';
+    const DefaultLoader = <div className='rr-loader'>{loaderText}</div>;
+    let CustomLoaderComponent = config && config.loader && config.loader.component;
+
+    if (CustomLoaderComponent) {
+      return <CustomLoaderComponent />;
+    }
+
+    return DefaultLoader;
+  };
+
   const publicOptions = {
     config,
     registerPageGroup,
@@ -48,7 +61,7 @@ export const ReportProvider = ({ config, children }) => {
 
   return (
     <ReportContext.Provider value={publicOptions}>
-      {!readyForPrint && <div className='rr-loader'>Generating Report</div>}
+      {!readyForPrint && renderLoader()}
       <section className={`rr-report ${fadeInClass}`}>
         {children}
         {readyForPrint && <div id={'rr-ready-for-print'} />}
