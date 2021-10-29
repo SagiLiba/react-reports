@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useContext } from 'react/cjs/react.development';
+import React, { useCallback, useEffect, useContext, useState } from 'react';
 import { Footer } from '../Footer/Footer';
 import { Header } from '../Header/Header';
 import { ReportContext } from './../../Contexts/ReportContext';

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import './ReportStyles.scss';
 import { useReportContextHelper } from './useReportContextHelper';
 import { useReportDataHandler } from './useReportDataHandler';

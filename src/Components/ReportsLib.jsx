@@ -1,3 +1,4 @@
+import React from 'react';
 import { Header, DefaultHeaderHeight } from './Header/Header';
 import { Footer, DefaultFooterHeight } from './Footer/Footer';
 
