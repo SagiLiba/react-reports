@@ -80,6 +80,8 @@ const PageGroupRepeating = {
   },
 };
 
+// :: Grouper and asyncMeasure are top level only, meaning a direct child of PageGroup
+
 function App() {
   return (
     <div className='App'>
