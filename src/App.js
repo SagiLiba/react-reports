@@ -44,6 +44,24 @@ const CustomHeader = ({ pageName = '', pageNumber = '' }) => {
   );
 };
 
+const CustomHeaderTwo = ({ pageName = '', pageNumber = '' }) => {
+  return (
+    <div className="custom-header" style={{ background: 'red' }}>
+      Header - {pageName} - {pageNumber}
+    </div>
+  );
+};
+
+const CustomFooterTwo = ({ pageName = '', pageNumber = '' }) => {
+  return (
+    <ToBottom>
+      <div className="custom-footer" style={{ background: 'blue' }}>
+        Footer - {pageName} - {pageNumber}
+      </div>
+    </ToBottom>
+  );
+};
+
 const CustomLoader = () => {
   return <div className="custom-loader">Load</div>;
 };
@@ -98,6 +116,18 @@ const PageGroupRepeating = {
   },
 };
 
+const customHeader = {
+  display: true,
+  component: CustomHeaderTwo,
+  height: 168,
+};
+
+const customFooter = {
+  display: true,
+  component: CustomFooterTwo,
+  height: 168,
+};
+
 const texts = [
   <Text>
     sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi sagi
@@ -118,7 +148,12 @@ function App() {
     <div className="App">
       <ReportProvider config={reportConfig}>
         <TableOfContents />
-        <PageGroup name="Group One" repeating={PageGroupRepeating}>
+        <PageGroup
+          name="Group One"
+          repeating={PageGroupRepeating}
+          header={customHeader}
+          footer={customFooter}
+        >
           {texts}
           <div className="one">Page One - with margins</div>
           <img src={image} />
@@ -171,17 +206,17 @@ function App() {
           </Grouper> */}
         {/* <div className='four'>Page Two</div> */}
         {/* </PageGroup> */}
-        {/* <PageGroup name="Group Three">
-          {/* <div className='three'>Page Three</div>
-          <div className='two'>Page Three</div>
-          <div className='five'>Page Three</div>
-          <div className='four'>Page Three</div>
-          <div className='four'>Page Three</div>
-          <div className='four'>Page Three</div>
+        <PageGroup name="Group Three">
+          <div className="three">Page Three</div>
+          <div className="two">Page Three</div>
+          <div className="five">Page Three</div>
+          <div className="four">Page Three</div>
+          <div className="four">Page Three</div>
+          <div className="four">Page Three</div>
           <div className="four">Page Three</div>
           <div className="four">Page Three</div>
           <div className="one">Page Three - with margins</div>
-        </PageGroup> */}
+        </PageGroup>
       </ReportProvider>
     </div>
   );

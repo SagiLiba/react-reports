@@ -9,12 +9,23 @@ export const usePage = ({
   repeating = null,
   showHeader = true,
   showFooter = true,
+  customFooter = null,
+  customHeader = null,
   showRepeatingTopComponent = false,
   showRepeatingBottomComponent = false,
 }) => {
   const reportContext = useContext(ReportContext);
-  const config = reportContext.config;
   const [pageNumber, setPageNumber] = useState('');
+  const config = { ...reportContext.config };
+
+  // PageGroup overrides:
+  if (customHeader) {
+    config['header'] = customHeader;
+  }
+
+  if (customFooter) {
+    config['footer'] = customFooter;
+  }
 
   useEffect(() => {
     if (automaticPageNumber && reportContext.readyForAddingPageNumbers) {
@@ -58,7 +69,13 @@ export const usePage = ({
 
       return null;
     },
-    [repeating, showRepeatingTopComponent, showRepeatingBottomComponent, name, pageNumber]
+    [
+      repeating,
+      showRepeatingTopComponent,
+      showRepeatingBottomComponent,
+      name,
+      pageNumber,
+    ]
   );
 
   return { renderHeader, renderFooter, renderRepeatingComponent, pageNumber };

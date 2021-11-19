@@ -9,6 +9,9 @@ export const usePageGroup = ({
   name,
   maxPages = null,
   repeating = null,
+  // Specific overrides of the config
+  customHeader = null,
+  customFooter = null,
 }) => {
   const reportContext = useContext(ReportContext);
 
@@ -88,10 +91,21 @@ export const usePageGroup = ({
       ? childrenHeights
       : { current: allChildrenHeights };
     const _children = prepareChildrenForMeasurement(children);
+
+    let config = { ...reportContext.config };
+
+    // PageGroup overrides
+    if (customHeader) {
+      config['header'] = customHeader;
+    }
+    if (customFooter) {
+      config['footer'] = customFooter;
+    }
+
     const splitPages = fragmentPages({
       children: _children,
       childrenHeights: _childrenHeights,
-      config: reportContext.config,
+      config,
       maxPages,
       repeating,
     });

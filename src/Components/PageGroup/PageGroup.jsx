@@ -20,6 +20,8 @@ const BasePageGroup = ({
   name = '',
   maxPages = null,
   repeating = null,
+  header = null,
+  footer = null,
 }) => {
   const reportContext = useContext(ReportContext);
   const pageGroupContext = useContext(PageGroupContext);
@@ -35,6 +37,8 @@ const BasePageGroup = ({
     name,
     maxPages,
     repeating,
+    customHeader: header,
+    customFooter: footer,
   });
 
   const parsedChildren = prepareChildrenForMeasurement(children);
@@ -105,6 +109,8 @@ const BasePageGroup = ({
         <Page
           key={index}
           name={name}
+          customFooter={footer}
+          customHeader={header}
           showHeader={showHeader}
           showFooter={showFooter}
           repeating={repeating}

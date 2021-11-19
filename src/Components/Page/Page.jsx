@@ -11,16 +11,21 @@ export const Page = ({
   repeating = null,
   showRepeatingTopComponent = false,
   showRepeatingBottomComponent = false,
+  customHeader = null,
+  customFooter = null,
 }) => {
-  const { renderHeader, renderFooter, renderRepeatingComponent, pageNumber } = usePage({
-    automaticPageNumber,
-    repeating,
-    name,
-    showHeader,
-    showFooter,
-    showRepeatingTopComponent,
-    showRepeatingBottomComponent,
-  });
+  const { renderHeader, renderFooter, renderRepeatingComponent, pageNumber } =
+    usePage({
+      automaticPageNumber,
+      repeating,
+      name,
+      customHeader,
+      customFooter,
+      showHeader,
+      showFooter,
+      showRepeatingTopComponent,
+      showRepeatingBottomComponent,
+    });
 
   const pageElementId = pageId ? pageId : 'page-' + pageNumber;
 
