@@ -4,7 +4,12 @@ import { fragmentPages, isEmptyObject, RenderPhase } from '../ReportsLib';
 import { ReportContext } from './../../Contexts/ReportContext';
 import { Header } from './../Header/Header';
 
-export const usePageGroup = ({ children, name, maxPages = null, repeating = null }) => {
+export const usePageGroup = ({
+  children,
+  name,
+  maxPages = null,
+  repeating = null,
+}) => {
   const reportContext = useContext(ReportContext);
 
   const [renderPhase, setRenderPhase] = useState(RenderPhase.MEASURE);
@@ -26,7 +31,8 @@ export const usePageGroup = ({ children, name, maxPages = null, repeating = null
     // Therefore allowing them to split into new pages, and not as a single unit/container.
     // ------------------------------------------------------------------------------------
     React.Children.forEach(children, (child, index) => {
-      const isGrouperChild = child && child.type && child.type.name === 'Grouper';
+      const isGrouperChild =
+        child && child.type && child.type.name === 'Grouper';
 
       if (isGrouperChild) {
         const groupElements = GrouperFunction({ ...child.props });
@@ -65,16 +71,22 @@ export const usePageGroup = ({ children, name, maxPages = null, repeating = null
     asyncChildrenHeights.current[childIndex] = height;
 
     const hasAllAsyncChildrenNotifiedTheirHeights =
-      asyncChildrenCount.current === Object.keys(asyncChildrenHeights.current).length;
+      asyncChildrenCount.current ===
+      Object.keys(asyncChildrenHeights.current).length;
     if (hasAllAsyncChildrenNotifiedTheirHeights) {
-      setAllChildrenHeights({ ...childrenHeights.current, ...asyncChildrenHeights.current });
+      setAllChildrenHeights({
+        ...childrenHeights.current,
+        ...asyncChildrenHeights.current,
+      });
     }
   };
   // --------------------------------------------------------------------------
   // Create pages and push child elements to them based on the children heights
   // --------------------------------------------------------------------------
   const splitToPages = () => {
-    const _childrenHeights = isEmptyObject(allChildrenHeights) ? childrenHeights : { current: allChildrenHeights };
+    const _childrenHeights = isEmptyObject(allChildrenHeights)
+      ? childrenHeights
+      : { current: allChildrenHeights };
     const _children = prepareChildrenForMeasurement(children);
     const splitPages = fragmentPages({
       children: _children,

@@ -1,6 +1,6 @@
 # React-Reports
 
-## _Generate Pixel-Perfect A4 PDF/Print-Ready Reports_
+## _Generate Pixel-Perfect Print Ready A4 Documents That Are Easily Convertable Into PDFs
 
 react-reports is a library meant to help you generate print-ready reports
 that will bring immediate value to you customers.
@@ -21,18 +21,13 @@ Easy to install:
 
 ```
 yarn add react-reports
+-------------------------
 npm install react-reports
 ```
 
 ## Usage Example:
 
-The following example will use the <PageGroup/> component to split your elements into multiple pages:
-
-- It will split it into 2 different pages.
-- Page one includes the "One" and "Two" divs.
-- Page two includes the "three" and "four" divs.
-- Table of contents is generated automatically using the <TableOfContents/> component.
-- You must wrap your report with the context <ReportProvider/>.
+The following example will use the `PageGroup` component to split your elements into multiple pages:
 
 ```
 function App() {
@@ -53,15 +48,33 @@ function App() {
 
 export default App;
 ```
+Breakdown:
+- You must wrap your report with the context `ReportProvider`.
+- It will split the component into two different pages.
+- Page one includes the "One" and "Two" divs.
+- Page two includes the "three" and "four" divs.
+- Table of contents is generated automatically using the `TableOfContents` component.
+
+
+### `Note:`
+
+The library is still in beta, current pitfalls:
+
+- You cannot have text as a direct child of the `PageGroup` component, it will crash the report. To property add text, wrap it inside a DOM element.
+
 
 ## Component API
 
 ### ReportProvider
 
+```
+<ReportProvider config={YourConfigObject}>
+```
+
+
 The report provider stores all the relevant logic needed to generate the report.
 It receives a config object that has the following properties:
 
-> The following should be passed to the ReportProvider using the "config" property.
 
 | Property      | Usage                                                                                                            |                                                                                                                                                                                             |
 | ------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -136,27 +149,9 @@ const repeatingComponents = {
 </ReportProvider>
 ```
 
-## Page
-
-The page component can be used to create custom pages, it can receive the page numbers automatically,
-or be left outside of the page numbers calculation.
-
-This component will not split into multiple pages, if such functionality is needed use the <PageGroup/> component instead.
-
-The <TableOfContents/> component is built using this <Page/> component.
-
-| Property            | Usage                                                                                                                                                                                                                                                                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name                | string, Pass the name that will be injected to the header, footer and repeating components.                                                                                                                                                                                                                                             |
-| automaticPageNumber | boolean, by default set to true, and will receive a page number automatically, when set to false it will not receive a page number.                                                                                                                                                                                                     |
-| pageId              | string, when setting the automaticPageNumber to false you page "id" attribute will need a unique identifier, you can set it using this property.                                                                                                                                                                                        |
-| repeating           | { top: { component: Reference to component, height: number }, bottom: { component: Reference to component, height: number } }, each page can have repeating component that will be displayed at the top and bottom of each page being created, could be useful for tables, when you wish to have the table header appear at every page. |
-| showHeader          | boolean, decide whether to display the header or not.                                                                                                                                                                                                                                                                                   |
-| showFooter          | boolean, decide whether to display the footer or not.                                                                                                                                                                                                                                                                                   |
-
 ## Table Of Contents
 
-A Component that automatically generates a table of contents based on the <PageGroup/> components you've used.
+A Component that automatically generates a table of contents based on the `PageGroup` components you've used.
 Currently, single pages will be left out of the table of contents.
 
 The table of contents will have links generated directing you to the relevant page.
@@ -165,7 +160,7 @@ The table of contents will have links generated directing you to the relevant pa
 <TableOfContents />
 ```
 
-This component will not split into multiple pages, if such functionality is needed use the <PageGroup/> component instead.
+This component will not split into multiple pages, if such functionality is needed use the `PageGroup` component instead.
 
 ## Asynchronous behavior
 
@@ -175,16 +170,16 @@ the useReport() hook.
 
 This makes sure that the page calculation will be based on the actual space your component takes out of the page.
 Sometimes you will still have component that will finish their rendering after an async operation of unknown time.
-To allow for asynchronous behavior, I'm delayed the "MEASURE" phase in the <PageGroup /> component, that is until
+To allow for asynchronous behavior, I'm delayed the "MEASURE" phase in the `PageGroup` component, that is until
 you specifically notify the height of your elements when they are rendered to the screen, and you must also save
 their state using the provided functions.
 
 #### measureAsync
 
-The <PageGroup /> component detects a direct child with the "measureAsync" property and injects relevant
+The `PageGroup` component detects a direct child with the "measureAsync" property and injects relevant
 properties to handle the async operations.
 
-A direct child meaning a child of <PageGroup />:
+A direct child meaning a child of `PageGroup`:
 
 ```
 <PageGroup name='Group One' repeating={PageGroupRepeating}>
@@ -198,7 +193,7 @@ The "measureAsync" property will inject into your custom child component the fol
 
 | Property       | Usage                                                                                                                                                                |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| \_notifyHeight | After your async operations are complete use this function to notify the <PageGroup/> of your component height, page generation will not proceed until this is done. |
+| \_notifyHeight | After your async operations are complete use this function to notify the `PageGroup` of your component height, page generation will not proceed until this is done. |
 | \_saveState    | In order to avoid duplicate async operations, save any of your component state using this function.                                                                  |
 | \_savedState   | Any state saved will be available for your async component later.                                                                                                    |
 
@@ -263,22 +258,22 @@ export const AsyncChild = ({ _notifyHeight, _saveState, _savedState }) => {
 
 #### measureHeight
 
-Use the measureHeight to correctly measure your elements height, and notify the <PageGroup/>
+Use the measureHeight to correctly measure your elements height, and notify the `PageGroup`
 Pass it a refernce to a DOM element.
 
 #### OverflowAuto
 
-To make sure that the height is being calculated correctly use the <OverflowAuto/> component
+To make sure that the height is being calculated correctly use the `OverflowAuto` component
 to wrap you child with a div with "overflow: auto", this makes sure that your child component
 will help correct height measurements of margins,padding and border.
 
-You must pass a reference using "useRef" to access that childs height and notify the <PageGroup />.
+You must pass a reference using "useRef" to access that childs height and notify the `PageGroup`.
 
 #### Summary of Asynchronous Behavior
 
 By Combining all of the above `AsyncMeasure`, `measureHeight`, `OverflowAuto`, `_notifyHeight`, `_saveState`, and `_savedState` you have complete control over asynchronous operation allowing you to generate the report pages with async components.
 
-> Remember that `asyncMeasure` is only available as a direct child of the <PageGroup/> component.
+> Remember that `asyncMeasure` is only available as a direct child of the `PageGroup` component.
 
 ### AsyncImage
 
@@ -300,7 +295,7 @@ child of the <PageGroup/> component.
 
 - Again `measureAsync` is used to indicate that we are dealing with an async child.
 - A remote image is being loaded using the `url` property.
-- You can pass additional props to the <img/> element using `imageProps`.
+- You can pass additional props to the `img` element using `imageProps`.
 
 You can use regular images when you are sure they have already been loaded in memory, or by hard-coding them.
 That is without using the `AsyncImage` component.
@@ -393,9 +388,3 @@ const puppeteer = require('puppeteer');
 })();
 
 ```
-
-### Pitfalls
-
-The library is not yet complete and has the following issues:
-
-- You cannot have text writting as a direct child of the <PageGroup/> component, it will crash the report.

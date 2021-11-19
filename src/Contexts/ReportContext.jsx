@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useRef } from 'react';
 import './ReportStyles.scss';
 import { useReportContextHelper } from './useReportContextHelper';
 import { useReportDataHandler } from './useReportDataHandler';
@@ -7,9 +7,16 @@ export const ReportContext = createContext({});
 
 export const ReportProvider = ({ config, children }) => {
   const pageCounter = useRef(0);
-  const { handledInitialValues, handledAPIRequests, data } = useReportDataHandler({ config });
-  const { readyForPrint, readyForAddingPageNumbers, pagesInfo, updatePageGroup, registerPageGroup, updatePageNumber } =
-    useReportContextHelper();
+  const { handledInitialValues, handledAPIRequests, data } =
+    useReportDataHandler({ config });
+  const {
+    readyForPrint,
+    readyForAddingPageNumbers,
+    pagesInfo,
+    updatePageGroup,
+    registerPageGroup,
+    updatePageNumber,
+  } = useReportContextHelper();
 
   const getPageId = () => {
     pageCounter.current += 1;
@@ -19,8 +26,9 @@ export const ReportProvider = ({ config, children }) => {
   const renderLoader = () => {
     let loaderText = config && config.loader && config.loader.text;
     loaderText = loaderText ? loaderText : 'Generating Report';
-    const DefaultLoader = <div className='rr-loader'>{loaderText}</div>;
-    let CustomLoaderComponent = config && config.loader && config.loader.component;
+    const DefaultLoader = <div className="rr-loader">{loaderText}</div>;
+    let CustomLoaderComponent =
+      config && config.loader && config.loader.component;
 
     if (CustomLoaderComponent) {
       return <CustomLoaderComponent />;
